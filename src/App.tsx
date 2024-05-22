@@ -40,10 +40,17 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+// import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/Forgot-Password';
+import ResetPassword from './pages/Reset-Password';
+import Lists from './pages/Lists';
+import Home from './pages/Home';
+import Menu from './pages/Menu';
 
 setupIonicReact();
 
@@ -52,6 +59,13 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          <Route component={Login} path="/login" exact />
+          <Route component={Register} path="/register" exact />
+          <Route component={ForgotPassword} path="/forgot-password" exact />
+          <Route component={ResetPassword} path="/reset-password" exact />
+          <Route component={Lists} path="/lists" exact />
+          <Route component={Home} path="/home" exact />
+          <Route component={Menu} path="/app" />
           <Route exact path="/tab1">
             <Tab1 />
           </Route>

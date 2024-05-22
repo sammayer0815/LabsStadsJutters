@@ -1,0 +1,103 @@
+ion-searchbar.radius-searchbar {
+    --border-radius: 20px;
+}
+
+/* ion-item.list-item {
+    --background: white;
+    --color: black;
+} */
+
+.image-test {
+    max-height: 200px;
+    min-width: 240px;
+    object-fit: cover;
+}
+  
+.last-line-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-address-date {
+    display: flex;
+    gap: 5px;
+}
+
+.space-between-buttons {
+    display: flex !important;
+   
+    justify-content: space-between;
+}
+  
+.fixed-width-button {
+    width: 110px;
+    height: 36px; 
+    --border-radius: 20px;
+}
+
+.scroll-container {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+}
+
+hr {
+    background-color: #C8C8C8;
+}
+
+/* Problem: scrollbar visible */
+.scroll{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.icon-address-date, .date-style {
+  color: #61646B;
+}
+
+
+/* Home */
+.div-category {
+    background-color: #ffffff;
+    border: 1.5px solid #8F8F8F;
+    border-radius: 50%;
+    min-height: 64px;
+    min-width: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+
+
+
+.category-section, .cards-section {
+    display: flex;
+    gap: 25px;
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+    overflow-y: hidden;
+}
+
+
+.scroll-card {
+    min-width: 200px; 
+    flex: 0 0 auto; 
+}
+
+.category-title, .card-titles {
+    color: #000000;
+    font-size: 16px;
+    font-weight:500;
+    margin-top: 0px;
+}
+
+.card-titles {
+    margin-top: 20px;
+    margin-bottom: 0;
+}

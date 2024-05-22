@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+* {
+    font-family: "Work Sans", sans-serif;
+}
+
+/* ion-content, ion-card  {
+    --background: white;
+} */
+
+ion-button {
+    --border-radius: 8px;
+    --border-width: 1.5px;
+}
+
+.register-input {
+    --border-radius: 8px !important;
+    --border-width: 1.5px;
+    --border-color: #AFB1B6 !important;
+}
+
+
+.underline {
+    text-decoration: underline;
+    color: #5F5F5F;
+}
+
+h2 {  
+    color: #5F5F5F;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+a, p {
+    color: #000000;
+    font-size: 14px;
+}
+
+hr {
+    background-color: #C8C8C8;
+}
+
+h2.title-form {
+    color: #000000;
+    font-size: 18px;
+    font-weight:500;
+}
+
