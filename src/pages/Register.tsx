@@ -51,7 +51,7 @@ const Register: React.FC = () => {
                                         <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" labelPlacement="floating" fill='outline' ></IonInput>
                                         <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" labelPlacement="floating" fill='outline' ></IonInput>
                                         <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Plaats" labelPlacement="floating" fill='outline' ></IonInput>
-                                        <IonButton type='submit' className="ion-margin-top" expand='block' color={'secondary'}>Login</IonButton>
+                                        <IonButton mode="ios" type='submit' className="ion-margin-top" expand='block' color={'secondary'}>Login</IonButton>
                                     </form>
                                 </IonCardContent>
                             </IonCard>

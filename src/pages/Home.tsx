@@ -6,11 +6,14 @@ import TestImage3 from '../assets/16912-20.jpg';
 import TestImage1 from '../assets/image 56.svg';
 import TestImage2 from '../assets/image 58.svg';
 import TestImage4 from '../assets/Frans-eiken-set-rotated.jpg';
+import NavTabs from '../components/Nav';
+import { useHistory } from 'react-router-dom';
 
 const Home: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [users, setUsers] = useState<any[]>([]);
     const [selectedUser, setSelectedUser] = useState<any>(null);
+    const history = useHistory();
 
     useIonViewWillEnter(async () => {
         const users = await getUsers();
@@ -23,6 +26,10 @@ const Home: React.FC = () => {
         const data = await fetch('https://randomuser.me/api?results=10');
         const users = await data.json();
         return users.results;
+    };
+
+    const handleCardClick = (user: any) => {
+        history.push(`/lists/${user.name.first}`);
     };
 
     return (
@@ -76,7 +83,7 @@ const Home: React.FC = () => {
                             <p className='card-titles'>Onlangs geüpload</p>
                             <div className='cards-section'>
                                 {users.map((user, index) => (
-                                <IonCard key={index} className="scroll-card" mode='ios'>
+                                <IonCard key={index} className="scroll-card" mode='ios' button onClick={() => handleCardClick(user)}>
                                     <img alt="Silhouette of mountains" src={TestImage4} width={'100%'} className='image-test' />
                                     <IonCardContent className="ion-no-padding">
                                         <IonItem lines="none">
@@ -129,6 +136,8 @@ const Home: React.FC = () => {
                     </IonRow>
                 </IonGrid>
             </IonContent>
+            {/* Nav */}
+            <NavTabs />
         </IonPage>
     );
 };

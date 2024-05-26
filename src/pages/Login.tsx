@@ -51,13 +51,13 @@ const Login: React.FC = () => {
                                                 <a className='underline' href='/forgot-password'>Wachtwoord vergeten</a>
                                             </IonCol>
                                             <IonCol size="5" className='ion-text-end'>
-                                                <a className='underline' href='/forgot-password'>Hulp nodig?</a>
+                                                <a className='underline' href='/help'>Hulp nodig?</a>
                                             </IonCol>
 
                                         </IonRow>
 
-                                        <IonButton type='submit' className="ion-margin-top" expand='block' color={'secondary'}>Login</IonButton>
-                                        <IonButton routerLink='/register' type='button' fill='outline' className="ion-margin-top" expand='block' color={'secondary'}>Account Aanmaken</IonButton>
+                                        <IonButton mode="ios" type='submit' className="ion-margin-top" expand='block' color={'secondary'}>Login</IonButton>
+                                        <IonButton mode="ios" routerLink='/register' type='button' fill='outline' className="ion-margin-top" expand='block' color={'secondary'}>Account Aanmaken</IonButton>
                                     </form>
                                 </IonCardContent>
                             </IonCard>
