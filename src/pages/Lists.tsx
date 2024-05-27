@@ -1,6 +1,6 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRow, IonSearchbar, IonSegment, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import React, { useState } from 'react';
-import './style.css'
+import './style.css';
 import { locationOutline } from 'ionicons/icons';
 import TestImage3 from '../assets/16912-20.jpg';
 import NavTabs from '../components/Nav';
@@ -10,7 +10,7 @@ const Lists: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [users, setUsers] = useState<any[]>([]);
     const [selectedUser, setSelectedUser] = useState<any>(null);
-    const history = useHistory()
+    const history = useHistory();
 
     useIonViewWillEnter(async () => {
         const users = await getUsers();

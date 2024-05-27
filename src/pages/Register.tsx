@@ -45,7 +45,6 @@ const Register: React.FC = () => {
                                 <IonCardContent>
                                     <form action="" onSubmit={doRegister}>
                                         <h2 className='ion-text-center title-form'>Aanmelden bij Stadsjutters</h2>
-                                        {/*Problem: Can't style it in a seperate css file*/}
                                         <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' ></IonInput>
                                         <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' placeholder='test@gmail.com'></IonInput>
                                         <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" labelPlacement="floating" fill='outline' ></IonInput>
