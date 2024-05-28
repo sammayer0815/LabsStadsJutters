@@ -26,14 +26,14 @@ const Lists: React.FC = () => {
     };
 
     const handleCardClick = (user: any) => {
-        history.push(`/lists/${user.name.first}`);
+        // history.push(`/lists/${user.name.first}`);
+        history.push(`/home/lists/list`);
     };
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar color={'secondary'}>
-                    
                 </IonToolbar>
                 <IonToolbar color={'secondary'}>
                     <IonSearchbar className='radius-searchbar' color="light" placeholder='Zoek product...'></IonSearchbar>
@@ -83,7 +83,7 @@ const Lists: React.FC = () => {
                                     <IonCardContent className="ion-no-padding">
                                         <IonItem lines="none">
                                             <IonLabel>
-                                                <h1>{user.name.first} {user.name.last}</h1>
+                                                <p className='title-card'>{user.name.first} {user.name.last}</p>
                                                 <div className='last-line-text'>
                                                     <div className='icon-address-date'>
                                                         <IonIcon icon={locationOutline}></IonIcon>

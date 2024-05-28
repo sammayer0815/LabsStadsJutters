@@ -49,6 +49,7 @@ import './theme/variables.css';
 // Firebase 
 import { initializeApp } from 'firebase/app';
 import { config } from './config/config';
+import List from './pages/List';
 
 
 export const Firebase = initializeApp(config.firebaseConfig);
@@ -68,6 +69,7 @@ const App: React.FC = () => (
             <Route path="/map" component={Map} exact />
             <Route path="/post" component={Post} exact />
             <Route path="/home/lists" component={Lists} exact />
+            <Route path="/home/lists/list" component={List} exact />
             <Route path="/berichten" component={Message} exact />
             <Route path="/berichten/community" component={Messages} exact />
             <Route path="/profiel" component={Profile} exact />
