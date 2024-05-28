@@ -52,24 +52,28 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
+      <IonTabs>
         <IonRouterOutlet>
-          <Route path="/register" component={Register} exact />
-          <Route path="/login" component={Login} exact />
-          <Route path="/forgot-password" component={PasswordReset} exact />
+          <Switch>
+            <Route path="/register" component={Register} exact />
+            <Route path="/login" component={Login} exact />
+            <Route path="/forgot-password" component={PasswordReset} exact />
 
-          <AuthRoute>
-            <Route path="/home" component={Home} exact />
-            <Route path="/map" component={Map} exact />
-            <Route path="/post" component={Post} exact />
-            <Route path="/message" component={Message} exact />
-            <Route path="/profile" component={Profile} exact />
-            <Route path="/messages" component={Messages} exact />
-          </AuthRoute>
+            <AuthRoute>
+              <Route path="/home" component={Home} exact />
+              <Route path="/map" component={Map} exact />
+              <Route path="/post" component={Post} exact />
+              <Route path="/message" component={Message} exact />
+              <Route path="/profile" component={Profile} exact />
+              <Route path="/messages" component={Messages} exact />
+            </AuthRoute>
 
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+          </Switch>
         </IonRouterOutlet>
+
         <IonTabBar slot="bottom">
           <IonTabButton tab="home" href="/home">
             <IonIcon aria-hidden="true" icon={triangle} />
