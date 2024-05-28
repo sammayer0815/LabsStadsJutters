@@ -1,0 +1,48 @@
+.ownMessage {
+    background: #c8acac;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding: 10px;
+    box-shadow: 0 2px 0 0 gray;
+    float: right;
+}
+
+.userMessage {
+  border-radius: 6px;
+    border: 1px solid black;
+    padding: 10px;
+    box-shadow: 0 2px 0 0 gray;
+}
+
+.userMessageContainer {
+    width: 80%;
+}
+
+.ownMessageContainer {
+    width: 80%;
+    float: right;
+}
+
+.messageBox {
+    border-top: black 1px solid;
+    width: 100%;
+}
+
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 10px;  /* Adjust based on your design */
+    top: 50%;    /* Center the icon vertically */
+    transform: translateY(-50%);
+    pointer-events: none;  /* Make sure the icon doesn't block the input */
+  }
+  
+  .imageUpload {
+    padding-left: 30px;  /* Adjust based on the icon size to avoid overlap */
+  }
+
+  
