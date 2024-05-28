@@ -18,7 +18,7 @@ ion-searchbar.radius-searchbar {
     justify-content: space-between;
 }
 
-.icon-address-date {
+.icon-address-date, .inline-icon-text {
     display: flex;
     gap: 5px;
 }
@@ -56,7 +56,7 @@ hr {
   display: none;
 }
 
-.icon-address-date, .date-style {
+.icon-address-date, .date-style, .grey-text {
   color: #61646B;
 }
 
@@ -100,4 +100,37 @@ hr {
 .card-titles {
     margin-top: 20px;
     margin-bottom: 0;
+}
+
+.custom-toolbar {
+    display: flex;
+    height: 70px;
+}
+
+.list-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.settings-profile-picture {
+    min-height: 100px;
+    min-width: 100px;
+}
+
+.flex-profile-picture-text {
+    display: flex;
+    gap: 100px
+}
+
+.space-text-change {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;    
+
+}
+
+
+.inline-icon-text {
+    margin-top: 4px;
 }

@@ -10,17 +10,21 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Home from './pages/Home'; // Renamed Tab1 to Home for consistency
-import Map from './pages/Tab1'; // Renamed Tab2 to Map for consistency
-import Post from './pages/Tab2'; // Renamed Tab3 to Post for consistency
-import Message from './pages/Message'; // Added your additional tabs
-import Profile from './pages/Tab3'; // Added your additional tabs
-import Messages from './pages/Messages'; // Added your additional tabs
-import AuthRoute from './components/AuthRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PasswordReset from './pages/PasswordReset';
+import Lists from './pages/Lists';
+import Home from './pages/Home';
+import TabBar from './components/Nav';
+import Help from './pages/Help';
+import Profile from './pages/Profile';
+import Admin from './pages/Admin';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Settings from './pages/Settings';
+import AuthRoute from './components/AuthRoute';
+import Message from './pages/Message'; // Added your additional tabs
+import Messages from './pages/Messages'; // Added your additional tabs
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -60,12 +64,19 @@ const App: React.FC = () => (
             <Route path="/forgot-password" component={PasswordReset} exact />
 
             <AuthRoute>
-              <Route path="/home" component={Home} exact />
               <Route path="/map" component={Map} exact />
-              <Route path="/post" component={Post} exact />
               <Route path="/message" component={Message} exact />
-              <Route path="/profile" component={Profile} exact />
               <Route path="/messages" component={Messages} exact />
+              <Route component={Help} path="/help" exact />
+              <Route component={Lists} path="/lists" exact />
+              <Route component={Home} path="/home" exact />
+              <Route component={Profile} path="/profiel" exact />
+              <Route component={Settings} path="/profiel/instellingen" exact />
+              <Route component={Contact} path="/profiel/contact" exact />
+              <Route component={About} path="/profiel/over-ons" exact />
+              <Route component={Admin} path="/profiel/admin" exact />
+              <Redirect exact from="/" to="/home" />
+              
             </AuthRoute>
 
             <Route exact path="/">
@@ -73,29 +84,6 @@ const App: React.FC = () => (
             </Route>
           </Switch>
         </IonRouterOutlet>
-
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="map" href="/map">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Map</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="post" href="/post">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Post</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="message" href="/message">
-            <IonIcon aria-hidden="true" icon="/icons/message.svg" />
-            <IonLabel>Message</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="profile" href="/profile">
-            <IonIcon aria-hidden="true" icon="/icons/profile.svg" />
-            <IonLabel>Profile</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>

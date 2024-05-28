@@ -23,7 +23,6 @@ const Register: React.FC = () => {
       setError("Passwords do not match");
       return;
     }
-
     setAuthing(true);
 
     try {
@@ -77,7 +76,7 @@ const Register: React.FC = () => {
                     <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" labelPlacement="floating" fill='outline' value={password} onIonChange={(e) => setPassword(e.detail.value!)} />
                     <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" labelPlacement="floating" fill='outline' value={confirmPassword} onIonChange={(e) => setConfirmPassword(e.detail.value!)} />
                     <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Plaats" labelPlacement="floating" fill='outline' value={placeName} onIonChange={(e) => setPlaceName(e.detail.value!)} />
-                    <IonButton type='submit' className="ion-margin-top" expand='block' color='secondary' disabled={authing}>Register</IonButton>
+                    <IonButton type='submit' mode='ios' className="ion-margin-top" expand='block' color='secondary' disabled={authing}>Register</IonButton>
                   </form>
                 </IonCardContent>
               </IonCard>
