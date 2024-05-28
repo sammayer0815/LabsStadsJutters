@@ -17,7 +17,7 @@ const Nav: React.FC = () => {
                 <IonLabel>Map</IonLabel>
             </IonTabButton>
         
-            <IonTabButton tab="post" href="/lists">
+            <IonTabButton tab="post" href="/post">
                 <IonIcon aria-hidden="true" icon={addCircleOutline} />
                 <IonLabel>Post</IonLabel>
             </IonTabButton>

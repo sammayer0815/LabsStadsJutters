@@ -13,7 +13,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
 import Home from './pages/Home'; 
 import Map from './pages/Map'; 
-import Post from './pages/Lists'; 
+import Post from './pages/Post'; 
 import Message from './pages/Message'; 
 import Profile from './pages/Profile';
 import Messages from './pages/Messages'; 
@@ -21,6 +21,11 @@ import AuthRoute from './components/AuthRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PasswordReset from './pages/PasswordReset';
+import Lists from './pages/Lists';
+import Settings from './pages/Settings';
+import Contact from './pages/Contact';
+import About from './pages/About';
+import Admin from './pages/Admin';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,7 +49,7 @@ import './theme/variables.css';
 // Firebase 
 import { initializeApp } from 'firebase/app';
 import { config } from './config/config';
-import Lists from './pages/Lists';
+
 
 export const Firebase = initializeApp(config.firebaseConfig);
 
@@ -61,10 +66,15 @@ const App: React.FC = () => (
           <AuthRoute>
             <Route path="/home" component={Home} exact />
             <Route path="/map" component={Map} exact />
-            <Route path="/lists" component={Lists} exact />
+            <Route path="/post" component={Post} exact />
+            <Route path="/home/lists" component={Lists} exact />
             <Route path="/berichten" component={Message} exact />
             <Route path="/berichten/community" component={Messages} exact />
             <Route path="/profiel" component={Profile} exact />
+            <Route path="/profiel/instellingen" component={Settings} exact />
+            <Route path="/profiel/contact" component={Contact}  exact />
+            <Route path="/profiel/over-ons" component={About} exact />
+            <Route path="/profiel/admin" component={Admin} exact />
           </AuthRoute>
 
           <Route exact path="/">

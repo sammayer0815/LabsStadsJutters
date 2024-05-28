@@ -33,7 +33,7 @@ const Help: React.FC = () => {
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6" className='ion-text-center'>
                             <hr/>
                             <p className='ion-margin-top'>
-                                Hulp nodig? Vul hieronder de formulier in of contacteer 
+                                Hulp nodig? Vul hieronder het formulier in of contacteer 
                                 ons via mail of telefoon.
                             </p>
                         </IonCol>
