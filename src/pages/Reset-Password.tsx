@@ -38,7 +38,7 @@ const ResetPassword: React.FC = () => {
                                         <h2 className='ion-text-center title-form'>Nieuw wachtwoord aanmaken</h2>
                                         <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" labelPlacement="floating" fill='outline' ></IonInput>
                                         <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" labelPlacement="floating" fill='outline' ></IonInput>
-                                        <IonButton type='submit'  className="ion-margin-top" expand='block' color={'secondary'}>Wachtwoord wijzigen</IonButton>
+                                        <IonButton mode="ios" type='submit'  className="ion-margin-top" expand='block' color={'secondary'}>Wachtwoord wijzigen</IonButton>
                                     </form>
                                 </IonCardContent>
                             </IonCard>

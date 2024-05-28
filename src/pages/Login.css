@@ -47,3 +47,7 @@ h2.title-form {
     font-weight:500;
 }
 
+ion-textarea textarea {
+    height: 120px;
+}
+
