@@ -2,11 +2,23 @@ import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabe
 import { bookmarkOutline, callOutline, imageOutline, informationCircleOutline, personAddOutline, personOutline, settingsOutline } from 'ionicons/icons';
 import React from 'react';
 import NavTabs from '../components/Nav';
+import { getAuth, signOut } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import './style.css';
 
 const Profile: React.FC = () => {
     const history = useHistory();
+
+    const handleLogout = async () => {
+        const auth = getAuth();
+        try {
+            await signOut(auth);
+            // Redirect to the login page or any other desired route
+            history.push('/login');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
 
     return (
         <IonPage>
@@ -42,7 +54,10 @@ const Profile: React.FC = () => {
                         <IonIcon className='ion-margin-end'  aria-hidden="true" icon={personOutline} />
                         <IonLabel>Admin</IonLabel>
                     </IonItem>
-                    <IonButton className='ion-margin-top' mode='ios'>Uitloggen</IonButton>
+                     {/* Logout Button */}
+                     <IonButton className='ion-margin-top' mode='ios' onClick={handleLogout}>
+                        Uitloggen
+                    </IonButton>
                 </IonList>
             </IonContent>
             {/* Nav */}

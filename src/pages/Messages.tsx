@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { onSnapshot, addDoc, Timestamp } from 'firebase/firestore';
 import { messagesCollection } from '../config/controller';
 import { useUserId } from "../components/AuthRoute";
+import NavTabs from '../components/Nav';
 
 const Messages: React.FC = () => {
     const userId = useUserId();
@@ -86,6 +87,8 @@ const Messages: React.FC = () => {
                     <IonButton onClick={handleAddMessage}>Send</IonButton>
                 </IonItem>
             </IonContent>
+              {/* Nav */}
+                <NavTabs />
         </IonPage>
     );
 };

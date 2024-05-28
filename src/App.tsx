@@ -10,21 +10,17 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { ellipse, square, triangle } from 'ionicons/icons';
+import Home from './pages/Home'; 
+import Map from './pages/Map'; 
+import Post from './pages/Lists'; 
+import Message from './pages/Message'; 
+import Profile from './pages/Profile';
+import Messages from './pages/Messages'; 
+import AuthRoute from './components/AuthRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PasswordReset from './pages/PasswordReset';
-import Lists from './pages/Lists';
-import Home from './pages/Home';
-import TabBar from './components/Nav';
-import Help from './pages/Help';
-import Profile from './pages/Profile';
-import Admin from './pages/Admin';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Settings from './pages/Settings';
-import AuthRoute from './components/AuthRoute';
-import Message from './pages/Message'; // Added your additional tabs
-import Messages from './pages/Messages'; // Added your additional tabs
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -48,45 +44,35 @@ import './theme/variables.css';
 // Firebase 
 import { initializeApp } from 'firebase/app';
 import { config } from './config/config';
+import Lists from './pages/Lists';
 
 export const Firebase = initializeApp(config.firebaseConfig);
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Switch>
-            <Route path="/register" component={Register} exact />
-            <Route path="/login" component={Login} exact />
-            <Route path="/forgot-password" component={PasswordReset} exact />
+<IonApp>
+  <IonReactRouter>
+      <IonRouterOutlet>
+          <Route path="/register" component={Register} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/forgot-password" component={PasswordReset} exact />
 
-            <AuthRoute>
-              <Route path="/map" component={Map} exact />
-              <Route path="/message" component={Message} exact />
-              <Route path="/messages" component={Messages} exact />
-              <Route component={Help} path="/help" exact />
-              <Route component={Lists} path="/lists" exact />
-              <Route component={Home} path="/home" exact />
-              <Route component={Profile} path="/profiel" exact />
-              <Route component={Settings} path="/profiel/instellingen" exact />
-              <Route component={Contact} path="/profiel/contact" exact />
-              <Route component={About} path="/profiel/over-ons" exact />
-              <Route component={Admin} path="/profiel/admin" exact />
-              <Redirect exact from="/" to="/home" />
-              
-            </AuthRoute>
+          <AuthRoute>
+            <Route path="/home" component={Home} exact />
+            <Route path="/map" component={Map} exact />
+            <Route path="/lists" component={Lists} exact />
+            <Route path="/berichten" component={Message} exact />
+            <Route path="/berichten/community" component={Messages} exact />
+            <Route path="/profiel" component={Profile} exact />
+          </AuthRoute>
 
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-          </Switch>
-        </IonRouterOutlet>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          </IonRouterOutlet>
+  </IonReactRouter>
+</IonApp>
 );
 
 export default App;

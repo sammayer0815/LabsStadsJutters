@@ -33,13 +33,13 @@ const ForgotPassword: React.FC = () => {
           await sendPasswordResetEmail(auth, email);
   
           // Password reset email sent successfully
-          setSuccess('Password reset email sent. Check your inbox.');
+          setSuccess('Wachtwoord reset link is verzonden naar je e-mailadres. Controleer je inbox of spam folder.');
           setTimeout(() => {
               history.push("/login");
           }, 5000);
       } catch (error) {
-          console.error("Error sending password reset email:", error);
-          setError('Failed to send password reset email. Please try again.');
+          console.error("Error mail verzenden:", error);
+          setError('Wachtwoord reset link kon niet worden verzonden. Probeer het opnieuw.');
       } finally {
           setSending(false);
       }
@@ -98,7 +98,7 @@ const ForgotPassword: React.FC = () => {
                                           className="ion-margin-top"
                                           expand='block'
                                           color={'secondary'}
-                                          disabled={!email} // Disable the button if email is empty
+                                          disabled={!email}
                                       >
                                           Nieuw wachtwoord aanvragen
                                       </IonButton>

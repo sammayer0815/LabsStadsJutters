@@ -2,6 +2,7 @@ import { IonContent, IonHeader, IonItem, IonLabel, IonPage, IonTitle, IonToolbar
 import ExploreContainer from '../components/ExploreContainer';
 import './Message.css';
 import { Link } from 'react-router-dom';
+import NavTabs from '../components/Nav';
 
 const Message: React.FC = () => {
   return (
@@ -19,7 +20,7 @@ const Message: React.FC = () => {
         </IonHeader>
 
       {/* Message card */}
-      <Link to={"/messages"}>
+      <Link to={"/berichten/community"}>
       <IonItem className='messageBox' lines="none">
         <img className='image' src="productImages/couch.jpg" alt="logo" />
         <div className='content'>
@@ -30,8 +31,9 @@ const Message: React.FC = () => {
         </div>
       </IonItem>
       </Link>
-
       </IonContent>
+    {/* Nav */}
+    <NavTabs />
     </IonPage>
   );
 };
