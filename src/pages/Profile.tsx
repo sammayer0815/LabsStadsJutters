@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
                         <IonLabel>Admin</IonLabel>
                     </IonItem>
                      {/* Logout Button */}
-                     <IonButton className='ion-margin-top' mode='ios' onClick={handleLogout}>
+                    <IonButton className='ion-margin-top' mode='ios' onClick={handleLogout}>
                         Uitloggen
                     </IonButton>
                 </IonList>
