@@ -18,7 +18,7 @@ ion-searchbar.radius-searchbar {
     justify-content: space-between;
 }
 
-.icon-address-date, .inline-icon-text {
+.icon-address-date, .inline-icon-text, .icon-address-name  {
     display: flex;
     gap: 5px;
 }
@@ -45,18 +45,21 @@ hr {
 }
 
 /* Problem: scrollbar visible */
-.scroll{
+.scroll {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll !important;
   overflow-y: hidden;
 }
 
-.scroll::-webkit-scrollbar {
-  display: none;
+
+
+.category-section::-webkit-scrollbar,
+.cards-section::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar in WebKit browsers */
 }
 
-.icon-address-date, .date-style, .grey-text {
+.icon-address-date, .date-style, .grey-text, .icon-address-name {
   color: #61646B;
 }
 
@@ -74,10 +77,17 @@ hr {
     padding: 12px;
 }
 
-p.title-card {
-    font-size: 16px;
+p.title-card, p.title-listing {
     color: #000000;
     margin-bottom: 5px;
+}
+
+p.title-card  {
+    font-size: 16px;
+}
+
+p.title-listing {
+    font-size: 20px;
 }
 
 .category-section, .cards-section {
@@ -141,11 +151,22 @@ p.title-card {
 .swiper {
     width: 100%;
     height: 100%;
-  }
+}
 
 .swiper-slide {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+}
+
+.edit-delete-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-listing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
