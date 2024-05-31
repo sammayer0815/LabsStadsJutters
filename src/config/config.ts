@@ -1,4 +1,4 @@
-// config.js
+// Connection to Firebase
 export const config = {
   firebaseConfig: {
     apiKey: "AIzaSyDkvzhJJoc8rc_l3kYHBIqEm6uhUOkrohk",

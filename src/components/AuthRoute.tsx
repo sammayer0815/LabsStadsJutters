@@ -2,7 +2,7 @@ import React, { useEffect, useState, createContext, useContext } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useHistory } from "react-router-dom";
 
-// Create a context to store the user's ID
+// To store User ID
 const AuthContext = createContext(null);
 
 export interface IAuthRouteProps {
@@ -14,7 +14,7 @@ export const auth = getAuth();
 const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
     const history = useHistory();
     const [loading, setLoading] = useState(true);
-    const [userId, setUserId] = useState<string | null>(null); // State to store user's ID
+    const [userId, setUserId] = useState<string | null>(null); 
 
     useEffect(() => {
         const unsubscribe = AuthCheck();
@@ -24,11 +24,13 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
         };
     }, []);
 
+    // Function to check if user is authenticated
     const AuthCheck = () => {
         return onAuthStateChanged(auth, (user) => {
             if (user) {
                 setLoading(false);
-                setUserId(user.uid); // Set the user's ID in the state
+                // Sets user ID
+                setUserId(user.uid);
             } else {
                 setLoading(false);
                 console.log("User is not logged in. Redirecting to login page.");
@@ -41,6 +43,7 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
         });
     };
 
+    // Loading screen display while checking authentication
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -54,5 +57,5 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
 
 export default AuthRoute;
 
-// Custom hook to access the user's ID
+// Hook to gather User ID
 export const useUserId = () => useContext(AuthContext);
