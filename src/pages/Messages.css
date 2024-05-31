@@ -1,3 +1,7 @@
+.sc-ion-label-ios-s>p {
+  color:black;
+}
+
 .ownMessage {
     background: #c8acac;
     border-radius: 6px;

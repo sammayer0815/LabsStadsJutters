@@ -71,7 +71,7 @@ const App: React.FC = () => (
             <Route path="/home/lists" component={Lists} exact />
             <Route path="/home/lists/list" component={List} exact />
             <Route path="/berichten" component={Message} exact />
-            <Route path="/berichten/community" component={Messages} exact />
+            <Route path="/berichten/community/:messageId" component={Messages} exact />
             <Route path="/profiel" component={Profile} exact />
             <Route path="/profiel/instellingen" component={Settings} exact />
             <Route path="/profiel/contact" component={Contact}  exact />
