@@ -3,90 +3,128 @@ import { Link } from 'react-router-dom';
 import NavTabs from '../components/Nav';
 import './Message.css';
 import { useEffect, useState } from 'react';
-import { onSnapshot, query, where, doc, getDoc } from 'firebase/firestore';
-import { chatCollection, listingsCollection } from '../config/controller';
+import { onSnapshot, query, where, orderBy, doc, getDoc, getDocs, limit } from 'firebase/firestore';
+import { chatCollection, listingsCollection, messagesCollection } from '../config/controller';
 import { useUserId } from "../components/AuthRoute";
 
-const Message: React.FC = () => {
-  const userId = useUserId();
-  const [messages, setMessages] = useState<any[]>([]);
+const Messages: React.FC = () => {
+    const userId = useUserId();
+    const [messages, setMessages] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(query(chatCollection, where("receiverId", "==", userId)), async (snapshot) => {
-      try {
-        const messagesData = await Promise.all(snapshot.docs.map(async (docSnapshot) => {
-          const messageData = docSnapshot.data();
-          const listingId = messageData.listingId;
-          
-          const listingDocRef = doc(listingsCollection, listingId);
-          const listingDocSnapshot = await getDoc(listingDocRef);
-          if (!listingDocSnapshot.exists()) {
-            throw new Error(`Listing data not found for listingId: ${listingId}`);
-          }
-          const listingData = listingDocSnapshot.data();
-          
-          return {
-            id: docSnapshot.id,
-            ...messageData,
-            listingImage: listingData?.listingImage || "default.jpg",
-            listingName: listingData?.listingName || "Unknown Listing",
-            timestamp: messageData.timestamp?.toDate ? messageData.timestamp.toDate() : new Date(messageData.timestamp)
-          };
-        }));
-        
-        const groupedMessages = messagesData.reduce((acc, message) => {
-          const { messageId } = message;
-          if (!acc[messageId]) {
-            acc[messageId] = [];
-          }
-          acc[messageId].push(message);
-          return acc;
-        }, {} as Record<string, any[]>);
-        
-        setMessages(groupedMessages);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    });
-  
-    return () => unsubscribe();
-  }, [userId]);
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                // Fetch messages where the user is either the sender or receiver
+                const senderQuery = query(
+                    messagesCollection,
+                    where("senderId", "==", userId),
+                    orderBy("timestamp", "desc")
+                );
 
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
-          <IonTitle>Berichten</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Messages</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+                const receiverQuery = query(
+                    messagesCollection,
+                    where("receiverId", "==", userId),
+                    orderBy("timestamp", "desc")
+                );
 
-        {Object.entries(messages).map(([messageId, messageList]) => {
-          const sortedMessages = messageList.sort((a, b) => b.timestamp - a.timestamp);
-          const latestMessage = sortedMessages[0];
-          return (
-            <Link to={`/berichten/community/${messageId}`} key={messageId}>
-              <IonItem className='messageBox' lines="none">
-                <img className='image' src={latestMessage.listingImage || "productImages/couch.jpg"} alt="Product" />
-                <div className='content'>
-                  <IonLabel className='title'>{latestMessage.listingName}</IonLabel>
-                  <IonLabel className='name'>{latestMessage.senderId}</IonLabel>
-                  <IonLabel className='receivedMessage'>{latestMessage.message}</IonLabel>
-                  <IonLabel className='date'>{new Date(latestMessage.timestamp).toLocaleString()}</IonLabel>
-                </div>
-              </IonItem>
-            </Link>
-          );
-        })}
-      </IonContent>
-      <NavTabs />
-    </IonPage>
-  );
+                const [senderSnapshot, receiverSnapshot] = await Promise.all([
+                    getDocs(senderQuery),
+                    getDocs(receiverQuery)
+                ]);
+
+                const allMessagesData = [...senderSnapshot.docs, ...receiverSnapshot.docs];
+
+                const messagesData = await Promise.all(allMessagesData.map(async (docSnapshot) => {
+                    const messageData = docSnapshot.data();
+                    const listingDoc = await getDoc(doc(listingsCollection, messageData.listingId));
+
+                    if (listingDoc.exists()) {
+                        const listingData = listingDoc.data();
+
+                        // Fetch the last chat message between the sender and receiver
+                        const lastChatQuery = query(
+                            chatCollection,
+                            where("listingId", "==", messageData.listingId),
+                            orderBy("timestamp", "desc"),
+                            limit(1)
+                        );
+
+                        const lastChatSnapshot = await getDocs(lastChatQuery);
+                        const lastChatData = lastChatSnapshot.docs[0]?.data();
+
+                        return {
+                            messageId: docSnapshot.id,
+                            listingImage: listingData.listingImage,
+                            listingName: listingData.listingName,
+                            message: lastChatData?.message || "No messages sent",
+                            timestamp: lastChatData?.timestamp?.toDate() || "No date",
+                            senderId: messageData.senderId === userId ? messageData.receiverId : messageData.senderId
+                        };
+                    }
+                    return null;
+                }));
+
+                // Filter out null messages
+                const filteredMessages = messagesData.filter(message => message !== null);
+
+                setMessages(filteredMessages);
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMessages();
+
+        const unsubscribeReceiver = onSnapshot(
+            query(
+                chatCollection,
+                where("receiverId", "==", userId),
+                orderBy("timestamp", "desc")
+            ),
+            (snapshot) => {
+                // Handle live updates if necessary
+            }
+        );
+
+        return () => {
+            unsubscribeReceiver();
+        };
+    }, [userId]);
+
+    return (
+        <IonPage>
+            <IonHeader>
+                <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+                    <IonTitle>Berichten</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent fullscreen>
+                {loading ? (
+                    <IonLabel>Loading...</IonLabel>
+                ) : messages.length === 0 ? (
+                    <IonLabel>No messages found</IonLabel>
+                ) : (
+                    messages.map((chat, index) => (
+                        <Link to={`/berichten/community/${chat.messageId}`} key={index}>
+                            <IonItem className='messageBox' lines="none">
+                                <img className='image' src={chat.listingImage} alt="Product" />
+                                <div className='content'>
+                                    <IonLabel className='title'>{chat.listingName}</IonLabel>
+                                    <IonLabel className='name'>{chat.senderId}</IonLabel>
+                                    <IonLabel className='receivedMessage'>{chat.message}</IonLabel>
+                                    <IonLabel className='date'>{chat.timestamp.toLocaleString()}</IonLabel>
+                                </div>
+                            </IonItem>
+                        </Link>
+                    ))
+                )}
+            </IonContent>
+            <NavTabs />
+        </IonPage>
+    );
 };
 
-export default Message;
+export default Messages;
