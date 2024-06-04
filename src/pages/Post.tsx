@@ -39,6 +39,7 @@ import { useUserId } from "../components/AuthRoute";
 import { getAuth } from "firebase/auth";
 import postPlusImage from "../assets/post-plus-image.svg"; // Adjust the path as needed
 import "./Post.css";
+import { useHistory } from "react-router-dom";
 
 const app = initializeApp(config.firebaseConfig);
 
@@ -53,11 +54,12 @@ const Post: React.FC = () => {
   const [material, setMaterial] = useState("");
   const [streetName, setStreetName] = useState("");
   const [description, setDescription] = useState("");
-
+  const history = useHistory();
   const userId = getAuth().currentUser?.uid;
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    
 
     // Get the current counter value
     const counterSnap = await getDoc(counterRef);
@@ -71,6 +73,14 @@ const Post: React.FC = () => {
       `https://geocode.maps.co/search?q=${streetName}&api_key=${config.geocodeConfig.apiKey}`
     );
     const location = response.data;
+
+    console.log(streetName)
+  
+    if (!location[0].display_name.includes('Netherlands')) {
+      console.log('Post failed: location does not contain "Netherlands".');
+      return;
+    }
+  
 
     if (location.length > 0) {
       let fileInputIndex = 0;
@@ -123,7 +133,7 @@ const Post: React.FC = () => {
         created_at: Timestamp.now(),
       });
 
-      console.log("succes");
+      history.push('/home/lists');
     }
   };
 

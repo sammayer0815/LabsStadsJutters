@@ -1,111 +1,231 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRow, IonSearchbar, IonSegment, IonSelect, IonSelectOption, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
-import React, { useState } from 'react';
-import './style.css';
-import { locationOutline } from 'ionicons/icons';
-import TestImage3 from '../assets/16912-20.jpg';
-import NavTabs from '../components/Nav';
-import { useHistory } from 'react-router-dom';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonRow,
+  IonSearchbar,
+  IonSegment,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+  useIonViewWillEnter,
+} from "@ionic/react";
+import React, { useState, useEffect } from "react";
+import "./style.css";
+import { locationOutline } from "ionicons/icons";
+import TestImage3 from "../assets/16912-20.jpg";
+import NavTabs from "../components/Nav";
+import { useHistory } from "react-router-dom";
+
+import firebase, { initializeApp } from "firebase/app";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  getFirestore,
+  limit,
+  query,
+} from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { config } from "../config/config";
+
+const app = initializeApp(config.firebaseConfig);
+const storage = getStorage(app);
+const db = getFirestore(app);
 
 const Lists: React.FC = () => {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [users, setUsers] = useState<any[]>([]);
-    const [selectedUser, setSelectedUser] = useState<any>(null);
-    const history = useHistory();
+  const history = useHistory();
+  const [items, setItems] = useState([]);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedCondition, setSelectedCondition] = useState(null);
 
-    useIonViewWillEnter(async () => {
-        const users = await getUsers();
-        console.log('🚀 ~ file: List.tsx:10 ~ useIonViewWillEnter ~ users:', users);
-        setUsers(users);
-        setLoading(false);
-    });
+  const handleCardClick = (item: any) => {
+    // history.push(`/lists/${user.name.first}`);
+    history.push(`/home/lists/list?id=${item.productFile}`);
+  };
 
-    const getUsers = async () => {
-        const data = await fetch('https://randomuser.me/api?results=10');
-        const users = await data.json();
-        return users.results;
+  const handleButtonClick = () => {
+    history.push("/home/lists");
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const productsCollection = collection(db, "Products");
+      const productData = await getDocs(productsCollection);
+
+      const items = await Promise.all(
+        productData.docs.map(async (productDoc: any) => {
+          const product = { ...productDoc.data(), id: productDoc.id };
+
+          // Fetch the user
+          const userDocRef = doc(db, "users", product.user_id);
+          const userDoc = getDoc(userDocRef);
+
+          // Fetch the image
+          const storage = getStorage();
+          const imagePath = `product-images/${product.product_id}-0`;
+          const imageRef = ref(storage, imagePath);
+          const imageUrl = getDownloadURL(imageRef);
+
+          // Wait for both promises to resolve
+          const [userData, imageUrlData] = await Promise.all([
+            userDoc,
+            imageUrl,
+          ]);
+
+          if (!userData.exists()) {
+            console.error(`No user document found with ID: ${product.user_id}`);
+            return;
+          }
+          const user = userData.data();
+
+          return {
+            ...product,
+            productName: product.title,
+            imageUrl: imageUrlData,
+            date: product.created_at.toDate().toLocaleDateString(),
+            address: product.location.display_name.split(",")[0],
+            productFile: product.id,
+            material: product.material,
+            condition: product.condition
+          };
+        })
+      );
+
+      setItems(items);
     };
 
-    const handleCardClick = (user: any) => {
-        // history.push(`/lists/${user.name.first}`);
-        history.push(`/home/lists/list`);
-    };
+    fetchData();
+  }, []);
 
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar color={'secondary'}>
-                </IonToolbar>
-                <IonToolbar color={'secondary'}>
-                    <IonSearchbar className='radius-searchbar' color="light" placeholder='Zoek product...'></IonSearchbar>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <IonGrid fixed>
-                    <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-                            
-                                <IonList >
-                                    <IonItem lines="none" className='scroll'>
-                                            <IonButton color={'dark'} fill='outline' className="fixed-width-button">
-                                                <IonSelect aria-label="materiaal" placeholder='Materiaal' >
-                                                    <IonSelectOption value="hout">Hout</IonSelectOption>
-                                                    <IonSelectOption value="metaal">Metaal</IonSelectOption>
-                                                    <IonSelectOption value="rest">Rest</IonSelectOption>
-                                                </IonSelect>
-                                            </IonButton>
-                                            <IonButton color={'dark'} fill='outline' className="fixed-width-button">
-                                                <IonSelect aria-label="conditie" placeholder='Conditie' >
-                                                    <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
-                                                    <IonSelectOption value="zo-goed-als-nieuw">Zo goed als nieuw</IonSelectOption>
-                                                    <IonSelectOption value="gebruikt">Gebruikt</IonSelectOption>
-                                                    <IonSelectOption value="stuk">Stuk</IonSelectOption>
-                                                </IonSelect>
-                                            </IonButton>
-                                            <IonButton color={'dark'} fill='outline' className="fixed-width-button" >
-                                                <IonSelect aria-label="afstand" placeholder='Afstand' >
-                                                    <IonSelectOption value="<5km">&lt; 5km</IonSelectOption>
-                                                    <IonSelectOption value="<10km">&lt; 10km</IonSelectOption>
-                                                    <IonSelectOption value="<15km">&lt; 15km</IonSelectOption>
-                                                    <IonSelectOption value=">15km">&gt; 15km</IonSelectOption>
-                                                </IonSelect>
-                                            </IonButton>
-                                    </IonItem>
-                                </IonList>
-                            
-                        </IonCol>
-                    </IonRow>
-                    <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-                            <hr />
-                            {users.map((user, index) => (
-                                <IonCard key={index} mode='ios' button onClick={() => handleCardClick(user)}>
-                                    <img alt="Silhouette of mountains" src={TestImage3} width={'100%'} className='image-test' />
-                                    <IonCardContent className="ion-no-padding">
-                                        <IonItem lines="none">
-                                            <IonLabel>
-                                                <p className='title-card'>{user.name.first} {user.name.last}</p>
-                                                <div className='last-line-text'>
-                                                    <div className='icon-address-date'>
-                                                        <IonIcon icon={locationOutline}></IonIcon>
-                                                        {/* Address */}
-                                                        <p className='date-style'>{user.name.first}</p>
-                                                    </div>
-                                                    {/* Date */}
-                                                    <p className='date-style'>{user.name.last}</p>
-                                                </div>
-                                            </IonLabel>
-                                        </IonItem>
-                                    </IonCardContent>
-                                </IonCard>
-                            ))}
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            </IonContent>
-            {/* Nav */}
-            <NavTabs/>
-        </IonPage>
-    );
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color={"secondary"}></IonToolbar>
+        <IonToolbar color={"secondary"}>
+          <IonSearchbar
+            className="radius-searchbar"
+            color="light"
+            placeholder="Zoek product..."
+          ></IonSearchbar>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonGrid fixed>
+          <IonRow class="ion-justify-content-center">
+            <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
+              <IonList>
+                <IonItem lines="none" className="scroll">
+                  <IonButton
+                    color={"dark"}
+                    fill="outline"
+                    className="fixed-width-button"
+                  >
+                    <IonSelect
+                      aria-label="materiaal"
+                      placeholder="Materiaal"
+                      onIonChange={(e) => setSelectedMaterial(e.detail.value)}
+                    >
+                      <IonSelectOption value="hout">Hout</IonSelectOption>
+                      <IonSelectOption value="metaal">Metaal</IonSelectOption>
+                      <IonSelectOption value="plastic">Plastic</IonSelectOption>
+                      <IonSelectOption value="glas">Glas</IonSelectOption>
+                      <IonSelectOption value="overig">Overig</IonSelectOption>
+                    </IonSelect>
+                  </IonButton>
+                  <IonButton
+                    color={"dark"}
+                    fill="outline"
+                    className="fixed-width-button"
+                  >
+                    <IonSelect
+                      aria-label="conditie"
+                      placeholder="Conditie"
+                      onIonChange={(e) => setSelectedCondition(e.detail.value)}
+                    >
+                      <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
+                      <IonSelectOption value="zo-goed-als-nieuw">
+                        Zo goed als nieuw
+                      </IonSelectOption>
+                      <IonSelectOption value="gebruikt">
+                        Gebruikt
+                      </IonSelectOption>
+                      <IonSelectOption value="stuk">Stuk</IonSelectOption>
+                    </IonSelect>
+                  </IonButton>
+                </IonItem>
+              </IonList>
+            </IonCol>
+          </IonRow>
+          <IonRow class="ion-justify-content-center">
+            <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
+              <hr />
+              {items
+                .filter((item) => {
+                  // Filter items based on selected options
+                  if (
+                    selectedCondition &&
+                    item.condition !== selectedCondition
+                  ) {
+                    return false;
+                  }
+                  if (selectedMaterial && item.material !== selectedMaterial) {
+                    return false;
+                  }
+                  return true;
+                })
+                .map((item, index) => (
+                  <IonCard
+                    key={index}
+                    mode="ios"
+                    button
+                    onClick={() => handleCardClick(item)}
+                  >
+                    <img
+                      alt="Silhouette of mountains"
+                      src={TestImage3}
+                      width={"100%"}
+                      className="image-test"
+                    />
+                    <IonCardContent className="ion-no-padding">
+                      <IonItem lines="none">
+                        <IonLabel>
+                          <p className="title-card">{item.productName}</p>
+                          <div className="last-line-text">
+                            <div className="icon-address-date">
+                              <IonIcon icon={locationOutline}></IonIcon>
+                              {/* Address */}
+                              <p className="date-style">{item.address}</p>
+                            </div>
+                            {/* Date */}
+                            <p className="date-style">{item.date}</p>
+                          </div>
+                        </IonLabel>
+                      </IonItem>
+                    </IonCardContent>
+                  </IonCard>
+                ))}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+      {/* Nav */}
+      <NavTabs />
+    </IonPage>
+  );
 };
 
 export default Lists;
