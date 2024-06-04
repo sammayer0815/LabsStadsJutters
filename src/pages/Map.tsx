@@ -68,18 +68,6 @@ const Map: React.FC = () => {
               fill="outline"
               className="fixed-width-button"
             >
-              <IonSelect aria-label="Categorie" placeholder="Afstand">
-                <IonSelectOption value="<5km">&lt; 5km</IonSelectOption>
-                <IonSelectOption value="<10km">&lt; 10km</IonSelectOption>
-                <IonSelectOption value="<15km">&lt; 15km</IonSelectOption>
-                <IonSelectOption value=">15km">&gt; 15km</IonSelectOption>
-              </IonSelect>
-            </IonButton>
-            <IonButton
-              color={"dark"}
-              fill="outline"
-              className="fixed-width-button"
-            >
               <IonSelect
                 aria-label="materiaal"
                 placeholder="Materiaal"
