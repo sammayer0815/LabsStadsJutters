@@ -23,6 +23,7 @@ import firebase, { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { config } from "../config/config";
+import { useHistory } from "react-router-dom";
 
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
@@ -51,6 +52,8 @@ const Map: React.FC = () => {
       console.log(items);
     });
   }, []);
+
+  const history = useHistory();
 
   return (
     <IonPage>
@@ -134,6 +137,11 @@ const Map: React.FC = () => {
                   position={[item.location.lat, item.location.lon]}
                   icon={myIcon}
                   key={item.id}
+                  eventHandlers={{
+                    click: () => {
+                      history.push('/home/lists/list?id=' + item.id);
+                    },
+                  }}
                 />
               );
             })}
