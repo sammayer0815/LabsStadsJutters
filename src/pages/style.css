@@ -1,5 +1,5 @@
 ion-searchbar.radius-searchbar {
-    --border-radius: 20px;
+  --border-radius: 20px;
 }
 
 /* ion-item.list-item {
@@ -8,44 +8,45 @@ ion-searchbar.radius-searchbar {
 } */
 
 .image-test {
-    max-height: 200px;
-    min-width: 240px;
-    object-fit: cover;
-}
-  
-.last-line-text {
-    display: flex;
-    justify-content: space-between;
+  max-height: 200px;
+  min-width: 240px;
+  object-fit: cover;
 }
 
-.icon-address-date, .inline-icon-text {
-    display: flex;
-    gap: 5px;
+.last-line-text {
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-address-date,
+.inline-icon-text {
+  display: flex;
+  gap: 5px;
 }
 
 .space-between-buttons {
-    display: flex !important;
-   
-    justify-content: space-between;
+  display: flex !important;
+
+  justify-content: space-between;
 }
-  
+
 .fixed-width-button {
-    width: 110px;
-    height: 36px; 
-    --border-radius: 20px;
+  width: 110px;
+  height: 36px;
+  --border-radius: 20px;
 }
 
 .scroll-container {
-    overflow-x: auto !important;
-    white-space: nowrap !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
 }
 
 hr {
-    background-color: #C8C8C8;
+  background-color: #c8c8c8;
 }
 
 /* Problem: scrollbar visible */
-.scroll{
+.scroll {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll !important;
@@ -56,96 +57,97 @@ hr {
   display: none;
 }
 
-.icon-address-date, .date-style, .grey-text {
-  color: #61646B;
+.icon-address-date,
+.date-style,
+.grey-text {
+  color: #61646b;
 }
-
 
 /* Home */
 .div-category {
-    background-color: #ffffff;
-    border: 1.5px solid #8F8F8F;
-    border-radius: 50%;
-    min-height: 64px;
-    min-width: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
+  background-color: #ffffff;
+  border: 1.5px solid #8f8f8f;
+  border-radius: 50%;
+  min-height: 64px;
+  min-width: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
 }
 
 p.title-card {
-    font-size: 16px;
-    color: #000000;
-    margin-bottom: 5px;
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 5px;
 }
 
-.category-section, .cards-section {
-    display: flex;
-    gap: 25px;
-    flex-wrap: nowrap;
-    overflow-x: auto; 
-    overflow-y: hidden;
+.category-section,
+.cards-section {
+  display: flex;
+  gap: 25px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
-
 
 .scroll-card {
-    min-width: 200px; 
-    flex: 0 0 auto; 
+  min-width: 200px;
+  flex: 0 0 auto;
 }
 
-.category-title, .card-titles {
-    color: #000000;
-    font-size: 16px;
-    font-weight:500;
-    margin-top: 0px;
+.category-title,
+.card-titles {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 0px;
 }
 
 .card-titles {
-    margin-top: 20px;
-    margin-bottom: 0;
+  margin-top: 20px;
+  margin-bottom: 0;
 }
 
 .custom-toolbar {
-    display: flex;
-    height: 70px;
+  display: flex;
+  height: 70px;
 }
 
 .list-profile {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .settings-profile-picture {
-    min-height: 100px;
-    min-width: 100px;
+  min-height: 100px;
+  min-width: 100px;
 }
 
 .flex-profile-picture-text {
-    display: flex;
-    gap: 100px
+  display: flex;
+  gap: 100px;
 }
 
 .space-text-change {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;    
-
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .inline-icon-text {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 .swiper {
-    width: 100%;
-    height: 100%;
-  }
+  width: 100%;
+  height: 100%;
+}
 
 .swiper-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
