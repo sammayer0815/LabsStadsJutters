@@ -47,24 +47,8 @@ const storage = getStorage(app);
 const db = getFirestore(app);
 
 const Home: React.FC = () => {
-  //   const [loading, setLoading] = useState<boolean>(true);
-  //   const [users, setUsers] = useState<any[]>([]);
-  //   const [selectedUser, setSelectedUser] = useState<any>(null);
   const history = useHistory();
   const [items, setItems] = useState([]);
-
-  //   useIonViewWillEnter(async () => {
-  //     const users = await getUsers();
-  //     console.log("🚀 ~ file: List.tsx:10 ~ useIonViewWillEnter ~ users:", users);
-  //     setUsers(users);
-  //     setLoading(false);
-  //   });
-
-  //   const getUsers = async () => {
-  //     const data = await fetch("https://randomuser.me/api?results=10");
-  //     const users = await data.json();
-  //     return users.results;
-  //   };
 
   const handleCardClick = (item: any) => {
     // history.push(`/lists/${user.name.first}`);
@@ -235,35 +219,6 @@ const Home: React.FC = () => {
           >
             Zie alle advertenties
           </IonButton>
-
-          {/* <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-                            <p className='card-titles'>Lokale advertenties</p>
-                            <div className='cards-section'>
-                                {users.map((user, index) => (
-                                <IonCard key={index} className="scroll-card" mode='ios'>
-                                    <img alt="Silhouette of mountains" src={TestImage4} width={'100%'} className='image-test' />
-                                    <IonCardContent className="ion-no-padding">
-                                        <IonItem lines="none">
-                                            <IonLabel>
-                                                <p className='title-card'>{user.name.first} {user.name.last}</p>
-                                                <div className='last-line-text'>
-                                                    <div className='icon-address-date'>
-                                                        <IonIcon icon={locationOutline}></IonIcon> */}
-          {/* Address */}
-          {/* <p className='date-style'>{user.name.first}</p>
-                                                    </div> */}
-          {/* Date */}
-          {/* <p className='date-style'>{user.name.last}</p>
-                                                </div>
-                                            </IonLabel>
-                                        </IonItem>
-                                    </IonCardContent>
-                                </IonCard>
-                                ))}
-                            </div>
-                        </IonCol>
-                    </IonRow> */}
         </IonGrid>
       </IonContent>
       {/* Nav */}
