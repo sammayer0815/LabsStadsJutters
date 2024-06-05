@@ -50,6 +50,8 @@ import './theme/variables.css';
 import { initializeApp } from 'firebase/app';
 import { config } from './config/config';
 import List from './pages/List';
+import Help from './pages/Help';
+import ChangePassword from './pages/ChangePassword';
 
 
 export const Firebase = initializeApp(config.firebaseConfig);
@@ -63,6 +65,7 @@ const App: React.FC = () => (
           <Route path="/register" component={Register} exact />
           <Route path="/login" component={Login} exact />
           <Route path="/forgot-password" component={PasswordReset} exact />
+          <Route path="/help" component={Help} exact />
 
           <AuthRoute>
             <Route path="/home" component={Home} exact />
@@ -77,6 +80,7 @@ const App: React.FC = () => (
             <Route path="/profiel/contact" component={Contact}  exact />
             <Route path="/profiel/over-ons" component={About} exact />
             <Route path="/profiel/admin" component={Admin} exact />
+            <Route path="/profiel/wachtwoord-aanpassen" component={ChangePassword} exact />
           </AuthRoute>
 
           <Route exact path="/">

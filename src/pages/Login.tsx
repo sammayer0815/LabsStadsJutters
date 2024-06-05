@@ -106,7 +106,7 @@ const Login: React.FC = () => {
                         <a className='underline' href='/forgot-password'>Wachtwoord vergeten</a>
                       </IonCol>
                       <IonCol size="5" className='ion-text-end'>
-                        <a className='underline' href='/forgot-password'>Hulp nodig?</a>
+                        <a className='underline' href='/help'>Hulp nodig?</a>
                       </IonCol>
                     </IonRow>
 
@@ -115,6 +115,7 @@ const Login: React.FC = () => {
                       className="ion-margin-top" 
                       expand='block' 
                       color={'secondary'}
+                      mode="ios"
                       disabled={authing}
                     >
                       Login
@@ -135,6 +136,7 @@ const Login: React.FC = () => {
                       fill='outline' 
                       className="ion-margin-top" 
                       expand='block' 
+                      mode="ios"
                       color={'secondary'}
                     >
                       Account Aanmaken
@@ -144,7 +146,6 @@ const Login: React.FC = () => {
               </IonCard>
             </IonCol>
           </IonRow>
-          <div className='rotated-bg'></div>
         </IonGrid>
       </IonContent>
     </IonPage>

@@ -37,7 +37,6 @@ const Home: React.FC = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar color={'secondary'}>
-                    
                 </IonToolbar>
                 <IonToolbar color={'secondary'}>
                     <IonSearchbar className='radius-searchbar' color="light" placeholder='Zoek product...'></IonSearchbar>
@@ -74,13 +73,10 @@ const Home: React.FC = () => {
                                         <img alt="Silhouette of mountains" src={TestImage3} width={'100%'} className='image-category' />
                                     </div>
                                 </div>
-
-
                         </IonCol>
                     </IonRow>
                     <IonRow class="ion-justify-content-center">
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-                            
                             <p className='card-titles'>Onlangs geüpload</p>
                             <div className='cards-section'>
                                 {users.map((user, index) => (

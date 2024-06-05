@@ -20,14 +20,12 @@ const Register: React.FC = () => {
   // Refs to handle input fields 
   // Couldn't use useState on these: an empty string would be send on the last filled field before submitting
   const usernameRef = useRef<HTMLIonInputElement>(null);
-  const placeNameRef = useRef<HTMLIonInputElement>(null);
 
   const registerWithEmailAndPassword = async (event: any) => {
     event.preventDefault();
 
-    // Get username & placeName value from the input fields using refs
+    // Get username value from the input fields using refs
     const username = usernameRef.current?.value as string;
-    const placeName = placeNameRef.current?.value as string;
 
     // Confirm repeated password
     if (password !== confirmPassword) {
@@ -46,7 +44,6 @@ const Register: React.FC = () => {
         await setDoc(doc(firestore, "users", user.uid), {
           userId: user.uid,
           username: username,
-          placeName: placeName,
           profilePicture: user.photoURL,
         });
       }
@@ -64,14 +61,13 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="white-header" mode="ios">
+        <IonButtons slot="start" className="ion-margin">
+          <IonBackButton defaultHref='/login'></IonBackButton>
+        </IonButtons>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid fixed>
-          {/* Back btn */}
-          <IonButtons>
-            <IonBackButton defaultHref='/login'></IonBackButton>
-          </IonButtons>
           {/* Logo */}
           <IonRow class="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6">
@@ -101,14 +97,12 @@ const Register: React.FC = () => {
                     <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" name="email" labelPlacement="floating" fill='outline'  onIonChange={(e) => setEmail(e.detail.value!)} />
                     <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" name="password" labelPlacement="floating" fill='outline'  onIonChange={(e) => setPassword(e.detail.value!)} />
                     <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" name="confirmPassword" labelPlacement="floating" fill='outline' onIonChange={(e) => setConfirmPassword(e.detail.value!)} />
-                    <IonInput ref={placeNameRef} type='text' className="ion-margin-top register-input" mode="md" label="Plaats" name="placeName" labelPlacement="floating" fill='outline' />
                     <IonButton type='submit' mode='ios' className="ion-margin-top" expand='block' color='secondary' disabled={authing}>Register</IonButton>
                   </form>
                 </IonCardContent>
               </IonCard>
             </IonCol>
           </IonRow>
-          <div className='rotated-bg'></div>
         </IonGrid>
       </IonContent>
     </IonPage>
