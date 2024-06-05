@@ -43,9 +43,8 @@ const Lists: React.FC = () => {
                 <IonGrid fixed>
                     <IonRow class="ion-justify-content-center">
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-                            
-                                <IonList >
-                                    <IonItem lines="none" className='scroll'>
+                                <IonList>
+                                    <IonItem lines="none" className='scroll ion-no-padding' >
                                             <IonButton color={'dark'} fill='outline' className="fixed-width-button">
                                                 <IonSelect aria-label="materiaal" placeholder='Materiaal' >
                                                     <IonSelectOption value="hout">Hout</IonSelectOption>

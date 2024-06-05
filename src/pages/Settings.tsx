@@ -3,25 +3,27 @@ import { addCircleOutline, bookmarkOutline, callOutline, constructOutline, creat
 import React from 'react';
 import NavTabs from '../components/Nav';
 import './style.css';
+import './Login.css';
 import TestImage4 from '../assets/Frans-eiken-set-rotated.jpg';
 
 
 import { useEffect, useState, useRef } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../config/controller';
-import { getAuth, updateEmail, reauthenticateWithCredential, EmailAuthProvider  } from "firebase/auth";
+import { firestore, storage } from '../config/controller';
+import { getAuth } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Settings: React.FC = () => {
     const [userDetails, setUserDetails] = useState<any | null>(null);
-    const [password, setPassword] = useState('');
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newEmail, setNewEmail] = useState('');
-
+    const [data, setData] = useState<{ img?: string }>({});
+    const [file, setFile] = useState<File | null>(null);
+    const [per, setPerc] = useState<number | null>(null);
     const usernameRef = useRef<HTMLIonInputElement>(null);
-    const placeNameRef = useRef<HTMLIonInputElement>(null);
-
+    
     const auth = getAuth();
     const user = auth.currentUser; 
+
+
 
     // Fetch the current user's details from Firestore 
     useEffect(() => {
@@ -37,6 +39,10 @@ const Settings: React.FC = () => {
                     // If the document exists, it sets the user details in setUserDetails()
                     if (docSnap.exists()) {
                         setUserDetails(docSnap.data());
+                        setData({ img: docSnap.data().profilePicture });
+                        if (usernameRef.current) {
+                            usernameRef.current.value = docSnap.data().username;
+                        }
                     } else {
                         console.log("No such document found!");
                     }
@@ -50,34 +56,52 @@ const Settings: React.FC = () => {
         getUserDetails();
     }, [user]);
 
-    // const inputChange = (event: any) => {
-    //     const { name, value } = event.target;
-    //     setUserDetails((prevState: any) => ({
-    //         ...prevState,
-    //         [name]: value
-    //     }));
-    // };
-    
-    // const passwordChange = (event: any) => {
-    //     setPassword(event.target.value);
-    // };
-
     const updateUserDetails = async (event: any) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent the default form submission behavior
 
+        // Check if a user is logged in
         if (user) {
             try {
-                // Update email in Firebase Authentication
-                if (newEmail !== user.email && newEmail !== '') {
-                    await updateEmail(user, newEmail);
+                let profilePictureUrl = userDetails.profilePicture;
+                let newUsername = usernameRef.current?.value || userDetails.username; // Use the current value of the username input field
+                
+                // Check if there's a file selected
+                if (file) {
+                    const name = new Date().getTime() + file.name;
+                    const storageRef = ref(storage, name);
+                    const uploadTask = uploadBytesResumable(storageRef, file);
+
+                    // Monitor the state of the upload task
+                    await new Promise<void>((resolve, reject) => {
+                        uploadTask.on(
+                            "state_changed",
+                            (snapshot) => {
+                                // Update the upload progress
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                setPerc(progress);
+                            },
+                            (error) => {
+                                console.log(error);
+                                reject(error);
+                            },
+                            async () => {
+                                // Once the upload is complete, get the download URL
+                                profilePictureUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                                setData((prev) => ({ ...prev, img: profilePictureUrl }));
+                                resolve();
+                            }
+                        );
+                    });
                 }
 
-                // Creates a reference to the Firestore document for the current user using the user's UID.
-                const userDoc = doc(firestore, "users", user.uid)
+                // Update the user's profile details in the database
+                const userDoc = doc(firestore, "users", user.uid);
                 await updateDoc(userDoc, {
-                    username: usernameRef.current?.value,
-                    placeName: placeNameRef.current?.value,
+                    username: newUsername,
+                    profilePicture: profilePictureUrl,
                 });
+
+                // Alert the user about successful update
                 alert('User details updated successfully!');
             } catch (error) {
                 console.error("Error updating details: ", error);
@@ -86,8 +110,28 @@ const Settings: React.FC = () => {
         }
     };
 
+    const openFileDialog = () => {
+        (document as any).getElementById("file").click();
+    };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const selectedFile = e.target.files[0];
+            setFile(selectedFile);
+            
+            // Read the file as a data URL and update the data state
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if (event.target && event.target.result) {
+                    const imgUrl = event.target.result.toString();
+                    setData((prev) => ({ ...prev, img: imgUrl }));
+                }
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    };
 
+    console.log(data);
 
     return (
         <IonPage>
@@ -106,26 +150,26 @@ const Settings: React.FC = () => {
                     <IonRow class="ion-justify-content-center">
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
                             <div className='flex-profile-picture-text'>
-                                <IonAvatar>
-                                    <img alt="Silhouette of mountains" src={TestImage4} className='settings-profile-picture' />
+                                <IonAvatar className='profile-picture'>
+                                    {/* <img alt="Silhouette of mountains" src={TestImage4} className='settings-profile-picture' /> */}
+                                    <img
+                                        src={
+                                            data.img || "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                                        }
+                                        alt="profile picture"
+                                    />
                                 </IonAvatar>
                                 <div className='space-text-change'>
-                                    <div className='space-text'>
-                                        <p className='ion-no-margin'>Henk123</p>
-                                        <div className='inline-icon-text'>
-                                            <IonIcon className='grey-text' aria-hidden="true" icon={locationOutline} />
-                                            <p className='ion-no-margin grey-text'>Amsterdam</p>
-                                        </div>
-                                    </div>
-                                    <div className='ion-margin-top'>
-                                        <div className='inline-icon-text'>
-                                            <IonIcon aria-hidden="true" icon={createOutline} />
-                                            <p className='ion-no-margin'>Foto aanpassen</p>
-                                        </div>
-                                        <div className='inline-icon-text'>
-                                            <IonIcon aria-hidden="true" icon={trashOutline} />
-                                            <p className='ion-no-margin'>Foto Verwijderen</p>   
-                                        </div>
+                                    <h6 className='ion-no-margin'>Henk123</h6>
+                                    <div className='inline-icon-text'>
+                                        <IonIcon aria-hidden="true" icon={createOutline} />
+                                        <input
+                                            type="file"
+                                            id="file"
+                                            style={{ display: "none" }}
+                                            onChange={handleFileChange}
+                                        />
+                                        <a className='ion-no-margin' style={{ color: 'black' }} onClick={openFileDialog}>Foto aanpassen</a>
                                     </div>
                                 </div>
                             </div>
@@ -137,13 +181,12 @@ const Settings: React.FC = () => {
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
                             {/*  If userDetails exists, show the form */}
                             {userDetails && (
-                                <form onSubmit={updateUserDetails}>
-                                    <h2 className='ion-text-center title-form'>Aanmelden bij Stadsjutters</h2>
-                                    <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' name="username" value={userDetails.username} ref={usernameRef}></IonInput>
-                                    <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' name="email" value={user?.email || ''} onIonChange={(e) => setNewEmail(e.detail.value!)}></IonInput>
-                                    <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Nieuw Wachtwoord" labelPlacement="floating" fill='outline' name="password"></IonInput>
-                                    <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Plaats" labelPlacement="floating" fill='outline' name="placeName"  value={userDetails.placeName} ref={placeNameRef} ></IonInput>
-                                    <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'}>Gegevens updaten</IonButton>
+                                <form onSubmit={updateUserDetails} className='gap-form'>
+                                    <h2 className='ion-text-center title-form'>Gegevens aanpassen</h2>
+                                    <IonInput type='email' className="register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' name="email" value={user?.email} disabled={true}></IonInput>
+                                    <IonInput type='text' className="register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' name="username" value={userDetails.username} ref={usernameRef} onIonChange={(e) => setUserDetails({ ...userDetails, username: e.detail.value })}></IonInput>
+                                    <a className='underline' href='/forgot-password'>Wachtwoord aanpassen</a>
+                                    <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'} disabled={per !== null && per < 100}>Gegevens updaten</IonButton>
                                 </form>
                             )}
                             

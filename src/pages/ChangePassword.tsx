@@ -5,7 +5,7 @@ import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCol, 
 import Logo from '../assets/Logo.svg';
 import './Login.css';
 
-const ForgotPassword: React.FC = () => {
+const ChangePassword: React.FC = () => {
     const router = useIonRouter();
     const auth = getAuth();
     const history = useHistory();
@@ -47,9 +47,9 @@ const ForgotPassword: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader className="white-header" mode="ios">
-                    <IonButtons slot="start" className="ion-margin">
-                        <IonBackButton defaultHref='/login'></IonBackButton>
+            <IonHeader>
+                    <IonButtons slot="start">
+                        <IonBackButton defaultHref='/profiel/instellingen'></IonBackButton>
                     </IonButtons>
             </IonHeader>
 
@@ -66,7 +66,7 @@ const ForgotPassword: React.FC = () => {
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6" className='ion-text-center'>
                             <hr />
                             <p className='ion-margin-top'>
-                                Vergeten is menselijk. Wat is je e-mailadres?
+                                Wachtwoord aanpassen? Wat is je e-mailadres?
                                 Dan zenden we je binnen enkele minuten een linkje
                                 om een nieuw wachtwoord in te stellen.
                             </p>
@@ -79,7 +79,7 @@ const ForgotPassword: React.FC = () => {
                             <IonCard>
                                 <IonCardContent>
                                     <form action="" onSubmit={requestPassword}>
-                                        <h2 className='ion-text-center title-form'>Wachtwoord Vergeten</h2>
+                                        <h2 className='ion-text-center title-form'>Wachtwoord Veranderen</h2>
                                         <IonInput
                                           type='email'
                                           className="ion-margin-top register-input"
@@ -96,7 +96,6 @@ const ForgotPassword: React.FC = () => {
                                           className="ion-margin-top"
                                           expand='block'
                                           color={'secondary'}
-                                          mode="ios"
                                           disabled={!email}
                                       >
                                           Nieuw wachtwoord aanvragen
@@ -116,4 +115,4 @@ const ForgotPassword: React.FC = () => {
     );
 };
 
-export default ForgotPassword;
+export default ChangePassword;

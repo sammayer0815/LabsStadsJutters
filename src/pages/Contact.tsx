@@ -22,8 +22,7 @@ const Contact: React.FC = () => {
                     <IonRow class="ion-justify-content-center">
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6" className='ion-text-center'>
                             <p className='ion-margin-top'>
-                                Hulp nodig? Vul hieronder het formulier in of contacteer 
-                                ons via mail of telefoon.
+                                Hulp nodig? Contacteer ons via mail of telefoon.
                             </p>
                         </IonCol>
                     </IonRow>
@@ -33,26 +32,10 @@ const Contact: React.FC = () => {
                             <IonCard>
                                 <IonCardContent>
                                     <h2 className='ion-text-center title-form'>Contactgegevens Stadsjutters</h2>
-                                    <p>Telefoon: 06-123456789</p>
-                                    <p>Email: stadsjuttersalmere@contact.com</p>
-                                </IonCardContent>
-                            </IonCard>
-                        </IonCol>
-                    </IonRow>
-                    
-                    {/*Form card*/} 
-                    <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6">
-                            <IonCard>
-                                <IonCardContent>
-                                    <form action="" >
-                                        <h2 className='ion-text-center title-form'>Contact formulier Stadsjutters</h2>
-                                        <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Naam" labelPlacement="floating" fill='outline'></IonInput>
-                                        <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' placeholder='test@gmail.com'></IonInput>
-                                        <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Titel Probleem" labelPlacement="floating" fill='outline'></IonInput>
-                                        <IonTextarea className="ion-margin-top register-input" mode="md" label="Beschrijf probleem" labelPlacement="floating" fill='outline'></IonTextarea>
-                                        <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'}>Formulier versturen</IonButton>
-                                    </form>
+                                    <div className='ion-margin-top'>
+                                        <p>Telefoon: 06-123456789</p>
+                                        <a href='mailto: stadsjuttersalmere@contact.com' className='link-mail'>Email: stadsjuttersalmere@contact.com</a>
+                                    </div>
                                 </IonCardContent>
                             </IonCard>
                         </IonCol>
