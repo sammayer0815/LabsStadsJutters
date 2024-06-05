@@ -27,26 +27,43 @@
     float: right;
 }
 
-.messageBox {
-    border-top: black 1px solid;
-    width: 100%;
+.ion-content {
+  --padding-bottom: 70px;
 }
 
-.input-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .input-icon {
-    position: absolute;
-    left: 10px;  /* Adjust based on your design */
-    top: 50%;    /* Center the icon vertically */
-    transform: translateY(-50%);
-    pointer-events: none;  /* Make sure the icon doesn't block the input */
-  }
-  
-  .imageUpload {
-    padding-left: 30px;  /* Adjust based on the icon size to avoid overlap */
-  }
+.time {
+  float: right;
+}
 
-  
+.messageBox {
+  border-top: 1px solid black;
+  width: 100%;
+  position: fixed;
+  bottom: 50px;
+  background-color: white;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.messageImage {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.imageModalContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .messageImage {
+    max-height: 100%;
+  }
+}

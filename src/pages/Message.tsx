@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { onSnapshot, query, where, orderBy, doc, getDoc, getDocs, limit } from 'firebase/firestore';
 import { chatCollection, listingsCollection, messagesCollection } from '../config/controller';
 import { useUserId } from "../components/AuthRoute";
+import { IonIcon } from '@ionic/react';
+import { imageOutline } from 'ionicons/icons';
 
 const Messages: React.FC = () => {
     const userId = useUserId();
@@ -15,7 +17,6 @@ const Messages: React.FC = () => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                // Fetch messages where the user is either the sender or receiver
                 const senderQuery = query(
                     messagesCollection,
                     where("senderId", "==", userId),
@@ -42,7 +43,6 @@ const Messages: React.FC = () => {
                     if (listingDoc.exists()) {
                         const listingData = listingDoc.data();
 
-                        // Fetch the last chat message between the sender and receiver
                         const lastChatQuery = query(
                             chatCollection,
                             where("listingId", "==", messageData.listingId),
@@ -52,23 +52,24 @@ const Messages: React.FC = () => {
 
                         const lastChatSnapshot = await getDocs(lastChatQuery);
                         const lastChatData = lastChatSnapshot.docs[0]?.data();
+                        const timestamp = lastChatData?.timestamp?.toDate() || messageData.timestamp.toDate();
 
                         return {
                             messageId: docSnapshot.id,
                             listingImage: listingData.listingImage,
                             listingName: listingData.listingName,
                             message: lastChatData?.message || "No messages sent",
-                            timestamp: lastChatData?.timestamp?.toDate() || "No date",
-                            senderId: messageData.senderId === userId ? messageData.receiverId : messageData.senderId
+                            timestamp,
+                            senderId: messageData.senderId === userId ? messageData.receiverId : messageData.senderId,
+                            imageUrl: lastChatData?.imageUrl || null
                         };
                     }
                     return null;
                 }));
-
-                // Filter out null messages
                 const filteredMessages = messagesData.filter(message => message !== null);
+                const sortedMessages = filteredMessages.sort((a, b) => b.timestamp - a.timestamp);
 
-                setMessages(filteredMessages);
+                setMessages(sortedMessages);
             } catch (error) {
                 console.error('Error fetching messages:', error);
             } finally {
@@ -85,7 +86,6 @@ const Messages: React.FC = () => {
                 orderBy("timestamp", "desc")
             ),
             (snapshot) => {
-                // Handle live updates if necessary
             }
         );
 
@@ -109,12 +109,14 @@ const Messages: React.FC = () => {
                 ) : (
                     messages.map((chat, index) => (
                         <Link to={`/berichten/community/${chat.messageId}`} key={index}>
-                            <IonItem className='messageBox' lines="none">
+                            <IonItem className='messageList' lines="none">
                                 <img className='image' src={chat.listingImage} alt="Product" />
                                 <div className='content'>
                                     <IonLabel className='title'>{chat.listingName}</IonLabel>
                                     <IonLabel className='name'>{chat.senderId}</IonLabel>
-                                    <IonLabel className='receivedMessage'>{chat.message}</IonLabel>
+                                    <IonLabel className='receivedMessage'>
+                                        {chat.message || (chat.imageUrl && <span className='imageText'><IonIcon icon={imageOutline} /> Image</span>)}
+                                    </IonLabel>
                                     <IonLabel className='date'>{chat.timestamp.toLocaleString()}</IonLabel>
                                 </div>
                             </IonItem>

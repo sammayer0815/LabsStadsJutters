@@ -1,7 +1,9 @@
-import { IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar, IonIcon, IonModal, IonButton } from '@ionic/react';
+import { sendSharp, imageOutline, closeOutline } from 'ionicons/icons';
 import './Messages.css';
 import { useEffect, useState } from 'react';
-import { onSnapshot, addDoc, Timestamp, query, where, doc, orderBy, getDoc, getDocs } from 'firebase/firestore';
+import { onSnapshot, addDoc, Timestamp, query, where, doc, orderBy, getDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { chatCollection, messagesCollection } from '../config/controller';
 import { useUserId } from "../components/AuthRoute";
 import NavTabs from '../components/Nav';
@@ -16,6 +18,9 @@ const Messages: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [listingId, setListingId] = useState<string>('');
     const [messages, setMessages] = useState<any[]>([]);
+    const [selectedImage, setSelectedImage] = useState<string>('');
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -37,10 +42,10 @@ const Messages: React.FC = () => {
                 setErrorMessage('Error fetching message details');
             }
         };
-    
+
         fetchMessageDetails();
     }, [messageId]);
-    
+
     useEffect(() => {
         if (userId && messageId && senderId && receiverId) {
             if (userId !== senderId && userId !== receiverId) {
@@ -61,46 +66,68 @@ const Messages: React.FC = () => {
                         setMessages(fetchedMessages);
                     }
                 );
-        
+
                 return () => {
                     unsubscribe();
                 };
             }
         }
     }, [userId, senderId, receiverId, messageId, history]);
-    
-    
+
     const handleAddMessage = async () => {
-        if (!newMessage.trim()) {
-            setErrorMessage('Message is required');
+        if (!newMessage.trim() && !selectedImageUrl) {
             return;
         }
-
+    
         if (!receiverId || !listingId) {
             setErrorMessage('Receiver ID and Listing ID are required');
             return;
         }
-
+    
         try {
             const timestamp = Timestamp.now();
             const message = newMessage;
-
+    
             await addDoc(chatCollection, {
                 senderId: userId,
                 receiverId: receiverId,
                 message,
                 timestamp,
                 listingId,
-                messageId: messageId // Use messageId from URL parameters
+                messageId: messageId,
+                imageUrl: selectedImageUrl
             });
-
+    
             console.log("Message added successfully!");
-
+    
             setNewMessage('');
+            setSelectedImageUrl(''); 
             setErrorMessage('');
+            document.getElementById('imageUpload')!.value = ''; // Reset the file input to allow re-uploading the same image
         } catch (error) {
             console.error("Error adding message:", error);
         }
+    };    
+
+    const handleUploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            try {
+                const storage = getStorage();
+                const storageRef = ref(storage, `images/${file.name}`);
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+                console.log("Image uploaded:", downloadURL);
+                setSelectedImageUrl(downloadURL);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+    };    
+
+    const openImageModal = (imageUrl: string) => {
+        setSelectedImage(imageUrl);
+        setIsModalOpen(true);
     };
 
     return (
@@ -110,7 +137,7 @@ const Messages: React.FC = () => {
                     <IonTitle>Berichten</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent fullscreen>
+            <IonContent fullscreen className='ion-content'>
             {messages.map((message, index) => (
                 <IonItem
                     key={`${message.id}-${index}`}
@@ -118,17 +145,59 @@ const Messages: React.FC = () => {
                     lines="none"
                 >
                     <IonLabel className={message.senderId === userId ? 'ownMessage' : 'userMessage'}>
+                        {message.imageUrl && 
+                            <img 
+                                src={message.imageUrl} 
+                                alt="uploaded" 
+                                className="messageImage" // Apply the CSS class here
+                                onClick={() => openImageModal(message.imageUrl)}
+                            />}
                         <p>{message.message}</p>
-                        <p>{message.senderId === userId ? 'Sent by: You' : `Sent by: ${message.senderId}`}</p>
-                        <p>{message.timestamp.toLocaleString()}</p>
+                        <p className='time'>{message.timestamp.toLocaleString()}</p>
                     </IonLabel>
                 </IonItem>
             ))}
                 <IonItem className='messageBox' lines='none'>
-                    <IonInput type='text' placeholder='Bericht...' name='message' value={newMessage} onIonChange={(e) => setNewMessage(e.detail.value!)}></IonInput>
-                    <IonButton onClick={handleAddMessage}>Send</IonButton>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        style={{ display: 'none' }} 
+                        id="imageUpload" 
+                        onChange={handleUploadImage} 
+                    />
+                    <IonInput 
+                        type='text' 
+                        placeholder='Stuur bericht...' 
+                        name='message' 
+                        value={newMessage} 
+                        onIonChange={(e) => setNewMessage(e.detail.value!)}
+                        className="messageInput"
+                    />
+                    <IonIcon 
+                        icon={imageOutline} 
+                        slot="end" 
+                        onClick={() => document.getElementById('imageUpload')?.click()} 
+                        style={{ cursor: 'pointer', margin: '0 10px' }} 
+                    />
+                    <IonIcon 
+                        icon={sendSharp} 
+                        slot="end" 
+                        onClick={() => handleAddMessage()} 
+                        style={{ cursor: 'pointer', margin: '0 10px' }} 
+                    />
                 </IonItem>
                 {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+                
+                <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
+                    <div className="imageModalContent">
+                        <IonIcon 
+                            icon={closeOutline} 
+                            onClick={() => setIsModalOpen(false)} 
+                            style={{ cursor: 'pointer', position: 'absolute', top: '10px', right: '10px', fontSize: '24px' }} 
+                        />
+                        <img src={selectedImage} alt="enlarged" style={{ width: '100%', height: 'auto' }} />
+                    </div>
+                </IonModal>
             </IonContent>
             <NavTabs />
         </IonPage>
