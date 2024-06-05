@@ -1,4 +1,4 @@
-import { IonAvatar, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar, createGesture } from '@ionic/react';
+import { IonToast, IonModal, IonAvatar, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar, createGesture } from '@ionic/react';
 import { addCircleOutline, bookmarkOutline, callOutline, constructOutline, createOutline, imageOutline, imagesOutline, informationCircleOutline, locationOutline, peopleOutline, personAddOutline, personOutline, settingsOutline, trashBinOutline, trashOutline } from 'ionicons/icons';
 import React from 'react';
 import NavTabs from '../components/Nav';
@@ -8,9 +8,10 @@ import TestImage4 from '../assets/Frans-eiken-set-rotated.jpg';
 
 
 import { useEffect, useState, useRef } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useHistory } from "react-router-dom";
+import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { firestore, storage } from '../config/controller';
-import { getAuth } from "firebase/auth";
+import { getAuth, deleteUser } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Settings: React.FC = () => {
@@ -23,7 +24,10 @@ const Settings: React.FC = () => {
     const auth = getAuth();
     const user = auth.currentUser; 
 
-
+    const [toast, setToast] = useState<{ show: boolean, message: string, color: string }>({ show: false, message: '', color: '' });
+    const [deletePicture, setDeletePicture] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const history = useHistory();
 
     // Fetch the current user's details from Firestore 
     useEffect(() => {
@@ -52,9 +56,15 @@ const Settings: React.FC = () => {
                 }
             }
         };
-
         getUserDetails();
     }, [user]);
+
+    // Function to handle the "Delete picture" link click
+    const handleDeletePictureClick = () => {
+        setDeletePicture(true);
+        const defaultImgUrl = "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg";
+        setData((prev) => ({ ...prev, img: defaultImgUrl })); // Reset the image URL to the default one
+    };
 
     const updateUserDetails = async (event: any) => {
         event.preventDefault(); // Prevent the default form submission behavior
@@ -94,15 +104,24 @@ const Settings: React.FC = () => {
                     });
                 }
 
+                // Check if the delete picture flag is set
+                if (deletePicture) {
+                    // Reset the image URL to the default one
+                    const defaultImgUrl = "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg";
+                    profilePictureUrl = defaultImgUrl;
+                    setDeletePicture(false); 
+                }
+
                 // Update the user's profile details in the database
                 const userDoc = doc(firestore, "users", user.uid);
                 await updateDoc(userDoc, {
                     username: newUsername,
                     profilePicture: profilePictureUrl,
                 });
-
+                
+                
                 // Alert the user about successful update
-                alert('User details updated successfully!');
+                setToast({ show: true, message: 'User details updated successfully!', color: 'success' });
             } catch (error) {
                 console.error("Error updating details: ", error);
                 alert('Failed to update user details.');
@@ -117,7 +136,6 @@ const Settings: React.FC = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
-            setFile(selectedFile);
             
             // Read the file as a data URL and update the data state
             const reader = new FileReader();
@@ -128,10 +146,31 @@ const Settings: React.FC = () => {
                 }
             };
             reader.readAsDataURL(selectedFile);
+    
+            // Update the file state
+            setFile(selectedFile);
+
+            e.target.value = '';
         }
     };
 
-    console.log(data);
+    const handleDeleteUserClick = async () => {
+        if (user) {
+            try {
+                // Delete user and users document from Firestore
+                const usersDoc = doc(firestore, "users", user.uid);
+                await deleteDoc(usersDoc);
+                await deleteUser(user);
+                history.push({
+                    pathname: '/login',
+                    state: { showToast: true, toastMessage: 'You have successfully deleted your account!', toastColor: 'success' }
+                });
+            } catch (error) {
+                console.error("Error updating details: ", error);
+                alert('Failed to delete user');
+            }
+        }
+    }
 
     return (
         <IonPage>
@@ -151,7 +190,6 @@ const Settings: React.FC = () => {
                         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
                             <div className='flex-profile-picture-text'>
                                 <IonAvatar className='profile-picture'>
-                                    {/* <img alt="Silhouette of mountains" src={TestImage4} className='settings-profile-picture' /> */}
                                     <img
                                         src={
                                             data.img || "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
@@ -160,7 +198,7 @@ const Settings: React.FC = () => {
                                     />
                                 </IonAvatar>
                                 <div className='space-text-change'>
-                                    <h6 className='ion-no-margin'>Henk123</h6>
+                                    <h6 className='ion-no-margin'>{userDetails?.username}</h6>
                                     <div className='inline-icon-text'>
                                         <IonIcon aria-hidden="true" icon={createOutline} />
                                         <input
@@ -170,6 +208,10 @@ const Settings: React.FC = () => {
                                             onChange={handleFileChange}
                                         />
                                         <a className='ion-no-margin' style={{ color: 'black' }} onClick={openFileDialog}>Foto aanpassen</a>
+                                    </div>
+                                    <div className='inline-icon-text'>
+                                        <IonIcon aria-hidden="true" icon={createOutline} />
+                                        <a className='ion-no-margin' style={{ color: 'black' }} onClick={handleDeletePictureClick} >Delete picture</a>
                                     </div>
                                 </div>
                             </div>
@@ -182,11 +224,11 @@ const Settings: React.FC = () => {
                             {/*  If userDetails exists, show the form */}
                             {userDetails && (
                                 <form onSubmit={updateUserDetails} className='gap-form'>
-                                    <h2 className='ion-text-center title-form'>Gegevens aanpassen</h2>
+                                    <h2 className='ion-text-center title-form'>Account gegevens</h2>
                                     <IonInput type='email' className="register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' name="email" value={user?.email} disabled={true}></IonInput>
                                     <IonInput type='text' className="register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' name="username" value={userDetails.username} ref={usernameRef} onIonChange={(e) => setUserDetails({ ...userDetails, username: e.detail.value })}></IonInput>
                                     <a className='underline' href='/forgot-password'>Wachtwoord aanpassen</a>
-                                    <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'} disabled={per !== null && per < 100}>Gegevens updaten</IonButton>
+                                    <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'} disabled={per !== null && per < 100}>Update account</IonButton>
                                 </form>
                             )}
                             
@@ -198,10 +240,37 @@ const Settings: React.FC = () => {
                             <hr className='ion-margin-bottom'/>
                             <h2 className='ion-text-center title-form ion-no-margin'>Account verwijderen</h2>
                             <h2 className='ion-text-center title-form ion-no-margin'>(dit kan niet ongedaan worden!)</h2>
-                            <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'danger'}>Account verwijderen</IonButton>
+                            {/* <IonButton mode="ios" className="ion-margin-top" expand='block' color={'danger'} onClick={handleDeleteUserClick}>Account verwijderen</IonButton> */}
+                            
+                            <IonButton mode="ios" className="ion-margin-top" expand='block' color={'danger'} onClick={() => setIsOpen(true)}>
+                                Account verwijderen
+                            </IonButton>
+                            <IonModal isOpen={isOpen}>
+                                <IonHeader>
+                                    <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+                                        <IonTitle>Account verwijderen</IonTitle>
+                                        <IonButtons slot="end">
+                                            <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+                                        </IonButtons>
+                                    </IonToolbar>
+                                </IonHeader>
+                                <IonContent className="ion-padding">
+                                    <h2 className='ion-text-center title-form'>Laatste kans...</h2>
+                                    <h2 className='ion-text-center title-form ion-no-margin'>(dit kan niet ongedaan worden!)</h2>
+                                    <IonButton mode="ios" className="ion-margin-top" expand='block' color={'danger'} onClick={handleDeleteUserClick}>Account verwijderen</IonButton>
+                                </IonContent>
+                            </IonModal>
+                        
                         </IonCol>
                     </IonRow>
                 </IonGrid> 
+                <IonToast
+                    isOpen={toast.show}
+                    onDidDismiss={() => setToast({ ...toast, show: false })}
+                    message={toast.message}
+                    duration={2000}
+                    color={toast.color}
+                />
             </IonContent>
             {/* Nav */}
             <NavTabs />
