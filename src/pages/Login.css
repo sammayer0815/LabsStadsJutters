@@ -47,3 +47,16 @@ h2.title-form {
     font-weight:500;
 }
 
+ion-textarea textarea {
+    height: 120px;
+}
+
+.link-mail {
+    color: #000000;
+    text-decoration: none;
+}
+
+.white-header {
+    background: #ffffff; /* Set the background to white */
+    color: #000000; /* Set the text color to black */
+}

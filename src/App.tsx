@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -11,10 +11,29 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import Home from './pages/Home'; 
+import Map from './pages/Map'; 
+import Post from './pages/Post'; 
+import Message from './pages/Message'; 
+import Profile from './pages/Profile';
+import Messages from './pages/Messages'; 
+import AuthRoute from './components/AuthRoute';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import PasswordReset from './pages/PasswordReset';
+import Lists from './pages/Lists';
+import Settings from './pages/Settings';
+import Contact from './pages/Contact';
+import About from './pages/About';
+import Admin from './pages/Admin';
 
+import AdminUsers from './pages/AdminUsers';
+import AdminListings from './pages/AdminListings';
+
+import List from './pages/List';
+import Help from './pages/Help';
+import ChangePassword from './pages/ChangePassword';
+import Mijnadvertenties from './pages/Mijnadvertenties'
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -31,71 +50,52 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-// import '@ionic/react/css/palettes/dark.system.css';
-
 /* Theme variables */
 import './theme/variables.css';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/Forgot-Password';
-import ResetPassword from './pages/Reset-Password';
-import Lists from './pages/Lists';
-import Home from './pages/Home';
-import Menu from './pages/Menu';
+
+// Firebase 
+import { initializeApp } from 'firebase/app';
+import { config } from './config/config';
+
+// Initialize Firebase
+export const Firebase = initializeApp(config.firebaseConfig);
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route component={Login} path="/login" exact />
-          <Route component={Register} path="/register" exact />
-          <Route component={ForgotPassword} path="/forgot-password" exact />
-          <Route component={ResetPassword} path="/reset-password" exact />
-          <Route component={Lists} path="/lists" exact />
-          <Route component={Home} path="/home" exact />
-          <Route component={Menu} path="/app" />
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
+<IonApp>
+  <IonReactRouter>
+      <IonRouterOutlet>
+          <Route path="/register" component={Register} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/forgot-password" component={PasswordReset} exact />
+          <Route path="/help" component={Help} exact />
+
+          <AuthRoute>
+            <Route path="/home" component={Home} exact />
+            <Route path="/map" component={Map} exact />
+            <Route path="/post" component={Post} exact />
+            <Route path="/home/lists" component={Lists} exact />
+            <Route path="/home/lists/list" component={List} exact />
+            <Route path="/berichten" component={Message} exact />
+            <Route path="/berichten/:messageId" component={Messages} exact />
+            <Route path="/profiel" component={Profile} exact />
+            <Route path="/profiel/instellingen" component={Settings} exact />
+            <Route path="/profiel/contact" component={Contact}  exact />
+            <Route path="/profiel/over-ons" component={About} exact />
+            <Route path="/profiel/admin" component={Admin} exact />
+            <Route path="/profiel/admin/users" component={AdminUsers} exact />
+            <Route path="/profiel/admin/listings" component={AdminListings} exact />
+            <Route path="/profiel/wachtwoord-aanpassen" component={ChangePassword} exact />
+            <Route path="/profiel/mijn-advertenties" component={Mijnadvertenties} exact />
+          </AuthRoute>
+
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/home" />
           </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+          </IonRouterOutlet>
+  </IonReactRouter>
+</IonApp>
 );
 
 export default App;

@@ -1,5 +1,5 @@
 ion-searchbar.radius-searchbar {
-    --border-radius: 20px;
+  --border-radius: 20px;
 }
 
 /* ion-item.list-item {
@@ -8,44 +8,45 @@ ion-searchbar.radius-searchbar {
 } */
 
 .image-test {
-    max-height: 200px;
-    min-width: 240px;
-    object-fit: cover;
-}
-  
-.last-line-text {
-    display: flex;
-    justify-content: space-between;
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
 }
 
-.icon-address-date {
-    display: flex;
-    gap: 5px;
+.last-line-text {
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-address-date,
+.inline-icon-text {
+  display: flex;
+  gap: 5px;
 }
 
 .space-between-buttons {
-    display: flex !important;
-   
-    justify-content: space-between;
+  display: flex !important;
+
+  justify-content: space-between;
 }
-  
+
 .fixed-width-button {
-    width: 110px;
-    height: 36px; 
-    --border-radius: 20px;
+  width: 110px;
+  height: 36px;
+  --border-radius: 20px;
 }
 
 .scroll-container {
-    overflow-x: auto !important;
-    white-space: nowrap !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
 }
 
 hr {
-    background-color: #C8C8C8;
+  background-color: #c8c8c8;
 }
 
 /* Problem: scrollbar visible */
-.scroll{
+.scroll {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll !important;
@@ -56,48 +57,140 @@ hr {
   display: none;
 }
 
-.icon-address-date, .date-style {
-  color: #61646B;
+.icon-address-date,
+.date-style,
+.grey-text {
+  color: #61646b;
 }
-
 
 /* Home */
 .div-category {
-    background-color: #ffffff;
-    border: 1.5px solid #8F8F8F;
-    border-radius: 50%;
-    min-height: 64px;
-    min-width: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
+  background-color: #ffffff;
+  border: 1.5px solid #8f8f8f;
+  border-radius: 50%;
+  min-height: 64px;
+  min-width: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
 }
 
-
-
-.category-section, .cards-section {
-    display: flex;
-    gap: 25px;
-    flex-wrap: nowrap;
-    overflow-x: auto; 
-    overflow-y: hidden;
+p.title-card {
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 5px;
 }
 
-
-.scroll-card {
-    min-width: 200px; 
-    flex: 0 0 auto; 
+.category-section,
+.cards-section {
+  display: flex;
+  gap: 25px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.category-title, .card-titles {
-    color: #000000;
-    font-size: 16px;
-    font-weight:500;
-    margin-top: 0px;
+/* Hide the scrollbar */
+.category-section::-webkit-scrollbar,
+.cards-section::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-card-home {
+  width: 250px;
+  height: 230px;
+  flex: 0 0 auto;
+}
+
+.scroll-card-listings {
+  width: 90%;
+  height: 220px;
+  flex: 0 0 auto;
+}
+
+.category-title,
+.card-titles {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 0px;
 }
 
 .card-titles {
-    margin-top: 20px;
-    margin-bottom: 0;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.custom-toolbar {
+  display: flex;
+  height: 70px;
+}
+
+.list-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.settings-profile-picture {
+  min-height: 100px;
+  min-width: 100px;
+}
+
+.flex-profile-picture-text {
+  display: flex;
+  gap: 100px;
+}
+
+.space-text-change {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inline-icon-text {
+  margin-top: 4px;
+}
+
+.swiper .swiper-slide img {
+  width: 100% !important;
+  height: 240px !important;
+  object-fit: contain; 
+}
+
+.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-avatar.profile-picture {
+    height: 87px;
+    width: 87px;
+}
+
+.bold-text-contact {
+    font-weight: bold;
+}
+
+.about-img {
+    border-radius: 5px;
+}
+
+.gap-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filer-list-flex{
+    display: flex;
+    justify-content: center;
+}
+
+.filer-btn-gap {
+    display: flex;
+    gap: 10px;
 }
