@@ -26,7 +26,6 @@ const Settings: React.FC = () => {
   const auth = getAuth();
   const user = auth.currentUser; 
 
-
   // Fetch the current user's details from Firestore 
   useEffect(() => {
     const getUserDetails = async () => {
