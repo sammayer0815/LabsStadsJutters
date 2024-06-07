@@ -1,46 +1,13 @@
-import {
-  IonAvatar,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonRow,
-  IonSearchbar,
-  IonSegment,
-  IonSelect,
-  IonSelectOption,
-  IonTitle,
-  IonToolbar,
-  useIonViewWillEnter,
-} from "@ionic/react";
 import React, { useState, useEffect } from "react";
-import "./style.css";
+import { useHistory } from "react-router-dom";
+import { IonContent, IonHeader, IonPage, IonToolbar, IonSearchbar, IonButton, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonItem, IonLabel, IonIcon } from "@ionic/react";
 import { locationOutline } from "ionicons/icons";
 import NavTabs from "../components/Nav";
-import { useHistory } from "react-router-dom";
-
-import firebase, { initializeApp } from "firebase/app";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  getFirestore,
-  limit,
-  query,
-} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getFirestore, collection, getDocs, query, limit, doc, getDoc } from "firebase/firestore"; // Import doc function here
+import { initializeApp } from "firebase/app";
 import { config } from "../config/config";
+import queryString from "query-string";
 
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
@@ -48,15 +15,21 @@ const db = getFirestore(app);
 
 const Home: React.FC = () => {
   const history = useHistory();
+  const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState([]);
 
-  const handleCardClick = (item: any) => {
-    // history.push(`/lists/${user.name.first}`);
-    history.push(`/home/lists/list?id=${item.productFile}`);
+  const handleButtonClick = () => {
+    history.push(`/home/lists?searchQuery=${searchValue}`);
   };
 
-  const handleButtonClick = () => {
-    history.push('/home/lists');
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleButtonClick();
+    }
   };
 
   useEffect(() => {
@@ -102,73 +75,81 @@ const Home: React.FC = () => {
         })
       );
 
-      setItems(items);
+      // Filter items based on search value
+      const filteredItems = items.filter(item =>
+        item.productName.toLowerCase().includes(searchValue.toLowerCase())
+      );
+
+      setItems(filteredItems);
     };
 
     fetchData();
-  }, []);
+  }, [searchValue]); // Update when search value changes
 
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color={"secondary"}></IonToolbar>
-        <IonToolbar color={"secondary"}>
+      <IonToolbar color="secondary"></IonToolbar>
+        <IonToolbar color="secondary">
           <IonSearchbar
             className="radius-searchbar"
             color="light"
             placeholder="Zoek product..."
+            value={searchValue}
+            onIonChange={handleSearchChange}
+            onKeyUp={handleSearchKeyPress}
           ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonGrid fixed>
-          <IonRow class="ion-justify-content-center">
-            <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-              <p className="category-title">Categorie</p>
-              <div className="category-section">
-                <div className="div-category">
-                  <img
-                    alt="Silhouette of mountains"
-                    src={"/src/assets/material-icons/hout.svg"}
-                    width={"100%"}
-                    className="image-category"
-                  />
-                </div>
-                <div className="div-category">
-                  <img
-                    alt="Silhouette of mountains"
-                    src={"src/assets/material-icons/metaal.svg"}
-                    width={"100%"}
-                    className="image-category"
-                  />
-                </div>
-                <div className="div-category">
-                  <img
-                    alt="Silhouette of mountains"
-                    src={"src/assets/material-icons/plastic.svg"}
-                    width={"100%"}
-                    className="image-category"
-                  />
-                </div>
-                <div className="div-category">
-                  <img
-                    alt="Silhouette of mountains"
-                    src={"src/assets/material-icons/glas.svg"}
-                    width={"100%"}
-                    className="image-category"
-                  />
-                </div>
-                <div className="div-category">
-                  <img
-                    alt="Silhouette of mountains"
-                    src={"src/assets/material-icons/overig.svg"}
-                    width={"100%"}
-                    className="image-category"
-                  />
-                </div>
-              </div>
-            </IonCol>
-          </IonRow>
+        <IonRow class="ion-justify-content-center">
+  <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
+    <p className="category-title">Categorie</p>
+    <div className="category-section">
+      <div className="div-category">
+        <img
+          alt="Silhouette of mountains"
+          src={"/src/assets/material-icons/hout.svg"}
+          width={"100%"}
+          className="image-category"
+        />
+      </div>
+      <div className="div-category">
+        <img
+          alt="Silhouette of mountains"
+          src={"src/assets/material-icons/metaal.svg"}
+          width={"100%"}
+          className="image-category"
+        />
+      </div>
+      <div className="div-category">
+        <img
+          alt="Silhouette of mountains"
+          src={"src/assets/material-icons/plastic.svg"}
+          width={"100%"}
+          className="image-category"
+        />
+      </div>
+      <div className="div-category">
+        <img
+          alt="Silhouette of mountains"
+          src={"src/assets/material-icons/glas.svg"}
+          width={"100%"}
+          className="image-category"
+        />
+      </div>
+      <div className="div-category">
+        <img
+          alt="Silhouette of mountains"
+          src={"src/assets/material-icons/overig.svg"}
+          width={"100%"}
+          className="image-category"
+        />
+      </div>
+    </div>
+  </IonCol>
+</IonRow>
 
           <IonRow class="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
@@ -180,7 +161,7 @@ const Home: React.FC = () => {
                     className="scroll-card"
                     mode="ios"
                     button
-                    onClick={() => handleCardClick(item)}
+                    onClick={() => history.push(`/home/lists/list?id=${item.productFile}`)}
                   >
                     <img
                       alt="Product image"
@@ -214,14 +195,13 @@ const Home: React.FC = () => {
             type="submit"
             className="ion-margin-top"
             expand="block"
-            color={"secondary"}
+            color="secondary"
             onClick={handleButtonClick}
           >
             Zie alle advertenties
           </IonButton>
         </IonGrid>
       </IonContent>
-      {/* Nav */}
       <NavTabs />
     </IonPage>
   );

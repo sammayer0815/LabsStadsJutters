@@ -151,7 +151,7 @@ const Messages: React.FC = () => {
                                             {" "}Image
                                         </span>
                                     ) : (
-                                        "No messages sent"
+                                        "Geen bericht gestuurd."
                                     )}
                                 </IonLabel>
                                 <IonLabel className='date'>{chat.timestamp.toLocaleString()}</IonLabel>
