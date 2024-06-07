@@ -140,9 +140,10 @@ p.title-card {
   margin-top: 4px;
 }
 
-.swiper {
-  width: 100%;
-  height: 100%;
+.swiper .swiper-slide img {
+  width: 100% !important;
+  height: 240px !important;
+  object-fit: contain; 
 }
 
 .swiper-slide {
@@ -151,3 +152,4 @@ p.title-card {
   align-items: center;
   justify-content: center;
 }
+
