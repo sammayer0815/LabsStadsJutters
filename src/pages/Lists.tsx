@@ -84,7 +84,7 @@ const Lists: React.FC = () => {
               {items.map((item, index) => (
                 <IonCard
                   key={index}
-                  className="scroll-card"
+                  className="scroll-card-listings"
                   mode="ios"
                   button
                   onClick={() => handleCardClick(item)} // Call handleCardClick on click

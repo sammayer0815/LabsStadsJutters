@@ -158,7 +158,7 @@ const Home: React.FC = () => {
                 {items.map((item, index) => (
                   <IonCard
                     key={index}
-                    className="scroll-card"
+                    className="scroll-card-home"
                     mode="ios"
                     button
                     onClick={() => history.push(`/home/lists/list?id=${item.productFile}`)}

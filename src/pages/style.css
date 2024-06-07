@@ -8,8 +8,8 @@ ion-searchbar.radius-searchbar {
 } */
 
 .image-test {
-  height: 200px;
-  width: 300px;
+  height: 160px;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -97,8 +97,15 @@ p.title-card {
   display: none;
 }
 
-.scroll-card {
-  min-width: 200px;
+.scroll-card-home {
+  width: 250px;
+  height: 200px;
+  flex: 0 0 auto;
+}
+
+.scroll-card-listings {
+  width: 90%;
+  height: 220px;
   flex: 0 0 auto;
 }
 
