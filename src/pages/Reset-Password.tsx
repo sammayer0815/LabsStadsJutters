@@ -44,7 +44,6 @@ const ResetPassword: React.FC = () => {
                             </IonCard>
                         </IonCol>
                     </IonRow>
-                    <div className='rotated-bg'></div>  
                 </IonGrid>
 
             </IonContent>

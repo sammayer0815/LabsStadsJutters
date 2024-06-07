@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { useHistory } from "react-router-dom";
-import { IonContent, IonHeader, IonPage, IonText, IonRow, IonCol, IonButton, IonGrid, IonTitle, IonToolbar, IonCard, IonInput, IonCardContent, useIonRouter } from '@ionic/react';
+import { useHistory, useLocation  } from "react-router-dom";
+import { IonToast, IonContent, IonHeader, IonPage, IonText, IonRow, IonCol, IonButton, IonGrid, IonTitle, IonToolbar, IonCard, IonInput, IonCardContent, useIonRouter } from '@ionic/react';
 import Logo from '../assets/Logo.svg';
 import './Login.css';
 
@@ -12,6 +12,20 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const location = useLocation(); 
+  const [toast, setToast] = useState<{ show: boolean, message: string, color: string }>({ show: false, message: '', color: '' });
+  
+  useEffect(() => {
+    // Check if there's a toast message in the location state
+    if (location.state && (location.state as any).showToast) {
+      const state = location.state as any;
+      // Set the toast message state
+      setToast({ show: true, message: state.toastMessage, color: state.toastColor });
+      // Clear the state after showing the toast
+      history.replace({ ...history.location, state: {} });
+    }
+  }, [location, history]);
 
   const signInWithGoogle = async () => {
     setAuthing(true);
@@ -54,7 +68,6 @@ const Login: React.FC = () => {
     <IonPage>
       <IonHeader>
       </IonHeader>
-
       <IonContent className="ion-padding">
         <IonGrid fixed>
           <IonRow class="ion-justify-content-center">
@@ -106,7 +119,7 @@ const Login: React.FC = () => {
                         <a className='underline' href='/forgot-password'>Wachtwoord vergeten</a>
                       </IonCol>
                       <IonCol size="5" className='ion-text-end'>
-                        <a className='underline' href='/forgot-password'>Hulp nodig?</a>
+                        <a className='underline' href='/help'>Hulp nodig?</a>
                       </IonCol>
                     </IonRow>
 
@@ -115,6 +128,7 @@ const Login: React.FC = () => {
                       className="ion-margin-top" 
                       expand='block' 
                       color={'secondary'}
+                      mode="ios"
                       disabled={authing}
                     >
                       Login
@@ -135,6 +149,7 @@ const Login: React.FC = () => {
                       fill='outline' 
                       className="ion-margin-top" 
                       expand='block' 
+                      mode="ios"
                       color={'secondary'}
                     >
                       Account Aanmaken
@@ -144,7 +159,13 @@ const Login: React.FC = () => {
               </IonCard>
             </IonCol>
           </IonRow>
-          <div className='rotated-bg'></div>
+          <IonToast
+            isOpen={toast.show}
+            onDidDismiss={() => setToast({ ...toast, show: false })}
+            message={toast.message}
+            duration={2000}
+            color={toast.color}
+          />
         </IonGrid>
       </IonContent>
     </IonPage>
