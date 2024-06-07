@@ -197,6 +197,7 @@ const Home: React.FC = () => {
             expand="block"
             color="secondary"
             onClick={handleButtonClick}
+            mode='ios'
           >
             Zie alle advertenties
           </IonButton>

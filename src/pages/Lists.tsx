@@ -3,7 +3,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { IonContent, IonHeader, IonPage, IonToolbar, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonItem, IonLabel, IonIcon, IonSearchbar } from "@ionic/react";
 import { locationOutline } from "ionicons/icons";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import NavTabs from "../components/Nav";
 import { config } from "../config/config";
@@ -59,6 +59,10 @@ const Lists: React.FC = () => {
     setSearchValue(e.target.value);
   };
 
+  const handleCardClick = (item: any) => {
+    history.push(`/home/lists/list?id=${item.productFile}`);
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -83,7 +87,7 @@ const Lists: React.FC = () => {
                   className="scroll-card"
                   mode="ios"
                   button
-                  onClick={() => handleCardClick(item)}
+                  onClick={() => handleCardClick(item)} // Call handleCardClick on click
                 >
                   <img
                     alt="Product image"
