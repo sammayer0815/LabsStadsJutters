@@ -98,11 +98,6 @@ const AdminUsers: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-      <IonSearchbar
-            className="radius-searchbar"
-            color="light"
-            placeholder="Zoek gebruiker..."
-          ></IonSearchbar>
         <IonList>
           {users.map((user) => (
             <IonItem key={user.userId}>
