@@ -1,15 +1,40 @@
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { addCircleOutline, bookmarkOutline, callOutline, constructOutline, imageOutline, imagesOutline, informationCircleOutline, peopleOutline, personAddOutline, personOutline, settingsOutline } from 'ionicons/icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavTabs from '../components/Nav';
 import './style.css';
 import { useHistory } from 'react-router-dom';
+import firebase from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { Redirect } from 'react-router-dom';
 
 const Admin: React.FC = () => {
 
   const history = useHistory();
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const userId = user ? user.uid : null;
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (userId) {
+        const db = getFirestore();
+        const userDoc = doc(db, 'users', userId);
+        const userSnap = await getDoc(userDoc);
+
+        if (userSnap.exists()) {
+          setIsAdmin(userSnap.data().role === 'admin');
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [userId]);
 
   return (
+    <>
     <IonPage>
       <IonHeader>
         <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
@@ -42,7 +67,10 @@ const Admin: React.FC = () => {
       {/* Nav */}
       <NavTabs />
     </IonPage>
+    </>
   );
 };
+
+
 
 export default Admin;

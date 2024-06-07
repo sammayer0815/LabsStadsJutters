@@ -33,7 +33,7 @@ import AdminListings from './pages/AdminListings';
 import List from './pages/List';
 import Help from './pages/Help';
 import ChangePassword from './pages/ChangePassword';
-
+import Mijnadvertenties from './pages/Mijnadvertenties'
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -87,6 +87,7 @@ const App: React.FC = () => (
             <Route path="/profiel/admin/users" component={AdminUsers} exact />
             <Route path="/profiel/admin/listings" component={AdminListings} exact />
             <Route path="/profiel/wachtwoord-aanpassen" component={ChangePassword} exact />
+            <Route path="/profiel/mijn-advertenties" component={Mijnadvertenties} exact />
           </AuthRoute>
 
           <Route exact path="/">

@@ -8,12 +8,18 @@ import { initializeApp } from "firebase/app";
 import NavTabs from "../components/Nav";
 import { config } from "../config/config";
 import queryString from "query-string";
+import { getAuth } from 'firebase/auth';
 
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
 
-const Lists: React.FC = () => {
+const Mijnadvertenties: React.FC = () => {
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const userId = user ? user.uid : null;
+
   const history = useHistory();
   const location = useLocation();
   const { search } = location;
@@ -41,6 +47,7 @@ const Lists: React.FC = () => {
           date: product.created_at.toDate().toLocaleDateString(),
           address: product.location.display_name.split(",")[0],
           productFile: product.id,
+          productUser: product.user_id
         };
       }));
 
@@ -81,7 +88,7 @@ const Lists: React.FC = () => {
         <IonGrid fixed>
           <IonRow className="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-              {items.map((item, index) => (
+            {items.filter(item => item.productUser === userId).map((item, index) => (
                 <IonCard
                   key={index}
                   className="scroll-card-listings"
@@ -120,4 +127,4 @@ const Lists: React.FC = () => {
   );
 };
 
-export default Lists;
+export default Mijnadvertenties;
