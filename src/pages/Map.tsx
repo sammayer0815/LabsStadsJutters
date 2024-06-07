@@ -64,46 +64,49 @@ const Map: React.FC = () => {
       </IonHeader>
       <IonContent>
         {/* Filter buttons */}
-        <IonList className="ion-margin-top">
+        <IonList className="ion-margin-top filer-list-flex">
           <IonItem lines="none" className="scroll">
-            <IonButton
-              color={"dark"}
-              fill="outline"
-              className="fixed-width-button"
-            >
-              <IonSelect
-                aria-label="materiaal"
-                placeholder="Materiaal"
-                onIonChange={(e) => setSelectedMaterial(e.detail.value)}
+            <div className="filer-btn-gap">
+              <IonButton
+                color={"dark"}
+                fill="outline"
+                className="fixed-width-button"
               >
-                <IonSelectOption value="hout">Hout</IonSelectOption>
-                <IonSelectOption value="metaal">Metaal</IonSelectOption>
-                <IonSelectOption value="plastic">Plastic</IonSelectOption>
-                <IonSelectOption value="glas">Glas</IonSelectOption>
-                <IonSelectOption value="overig">Overig</IonSelectOption>
-              </IonSelect>
-            </IonButton>
-            <IonButton
-              color={"dark"}
-              fill="outline"
-              className="fixed-width-button"
-            >
-              <IonSelect
-                aria-label="conditie"
-                placeholder="Conditie"
-                onIonChange={(e) => setSelectedCondition(e.detail.value)}
+                <IonSelect
+                  aria-label="materiaal"
+                  placeholder="Materiaal"
+                  onIonChange={(e) => setSelectedMaterial(e.detail.value)}
+                >
+                  <IonSelectOption value="hout">Hout</IonSelectOption>
+                  <IonSelectOption value="metaal">Metaal</IonSelectOption>
+                  <IonSelectOption value="plastic">Plastic</IonSelectOption>
+                  <IonSelectOption value="glas">Glas</IonSelectOption>
+                  <IonSelectOption value="overig">Overig</IonSelectOption>
+                </IonSelect>
+              </IonButton>
+              <IonButton
+                color={"dark"}
+                fill="outline"
+                className="fixed-width-button"
               >
-                <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
-                <IonSelectOption value="zo-goed-als-nieuw">
-                  Zo goed als nieuw
-                </IonSelectOption>
-                <IonSelectOption value="gebruikt">Gebruikt</IonSelectOption>
-                <IonSelectOption value="stuk">Stuk</IonSelectOption>
-              </IonSelect>
-            </IonButton>
+                <IonSelect
+                  aria-label="conditie"
+                  placeholder="Conditie"
+                  onIonChange={(e) => setSelectedCondition(e.detail.value)}
+                >
+                  <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
+                  <IonSelectOption value="zo-goed-als-nieuw">
+                    Zo goed als nieuw
+                  </IonSelectOption>
+                  <IonSelectOption value="gebruikt">Gebruikt</IonSelectOption>
+                  <IonSelectOption value="stuk">Stuk</IonSelectOption>
+                </IonSelect>
+              </IonButton>
+            </div>
+            
           </IonItem>
         </IonList>
-
+        <hr/>
         <MapContainer
           center={[52.4001, 5.509]}
           zoom={11}

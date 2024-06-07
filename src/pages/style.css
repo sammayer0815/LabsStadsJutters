@@ -91,6 +91,12 @@ p.title-card {
   overflow-y: hidden;
 }
 
+/* Hide the scrollbar */
+.category-section::-webkit-scrollbar,
+.cards-section::-webkit-scrollbar {
+  display: none;
+}
+
 .scroll-card {
   min-width: 200px;
   flex: 0 0 auto;
@@ -166,3 +172,18 @@ ion-avatar.profile-picture {
     border-radius: 5px;
 }
 
+.gap-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filer-list-flex{
+    display: flex;
+    justify-content: center;
+}
+
+.filer-btn-gap {
+    display: flex;
+    gap: 10px;
+}

@@ -151,7 +151,7 @@ const Home: React.FC = () => {
   </IonCol>
 </IonRow>
 
-          <IonRow class="ion-justify-content-center">
+          <IonRow class="ion-justify-content-center ion-margin-top">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
               <p className="card-titles">Onlangs geüpload</p>
               <div className="cards-section">
