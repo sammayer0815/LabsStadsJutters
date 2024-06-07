@@ -142,7 +142,7 @@ import './Login.css';
                     >
                       Login
                     </IonButton>
-                    <IonButton 
+                    {/* <IonButton 
                       type='button'
                       onClick={signInWithGoogle} 
                       className="ion-margin-top" 
@@ -151,7 +151,7 @@ import './Login.css';
                       disabled={authing}
                     >
                       Sign in with Google
-                    </IonButton>
+                    </IonButton> */}
                     <IonButton 
                       routerLink='/register' 
                       type='button' 

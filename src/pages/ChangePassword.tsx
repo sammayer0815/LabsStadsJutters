@@ -61,7 +61,7 @@ import './Login.css';
       </IonHeader>
 
 
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding-horizontal">
         <IonGrid fixed>
           <IonRow class="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6">
