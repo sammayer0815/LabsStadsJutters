@@ -14,6 +14,7 @@ import {
   IonAvatar,
   IonRow,
   IonCol,
+  IonSearchbar,
 } from "@ionic/react";
 import {
   addCircleOutline,
@@ -30,7 +31,7 @@ import {
 } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import NavTabs from "../components/Nav";
-import "./style.css";
+import "./AdminUsers.css";
 
 import firebase, { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
@@ -88,8 +89,20 @@ const AdminUsers: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>{/* ... */}</IonHeader>
+       <IonHeader>
+        <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+          <IonButtons>
+            <IonBackButton defaultHref='profiel/admin' text=""></IonBackButton> 
+          </IonButtons>
+          <IonTitle>Bekijk alle gebruikers</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="ion-padding">
+      <IonSearchbar
+            className="radius-searchbar"
+            color="light"
+            placeholder="Zoek gebruiker..."
+          ></IonSearchbar>
         <IonList>
           {users.map((user) => (
             <IonItem key={user.userId}>
@@ -101,21 +114,21 @@ const AdminUsers: React.FC = () => {
               </IonAvatar>
               <IonLabel>
                 <IonRow>{user.username}</IonRow>
-                <IonRow>{user.email}</IonRow>
               </IonLabel>
               {user.role !== "admin" ? (
-                <IonButton
+                <IonButton 
+                  color={"primary"}
                   slot="end"
                   onClick={() => handlePromote(user.userId)}
                 >
                   Promote
                 </IonButton>
               ) : (
-                <IonButton slot="end" onClick={() => handleDemote(user.userId)}>
+                <IonButton color={"medium"} slot="end" onClick={() => handleDemote(user.userId)}>
                   Demote
                 </IonButton>
               )}
-              <IonButton slot="end" onClick={() => handleDelete(user.userId)}>
+              <IonButton color={"danger"} slot="end" onClick={() => handleDelete(user.userId)}>
                 Delete
               </IonButton>
             </IonItem>
