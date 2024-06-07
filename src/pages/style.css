@@ -153,3 +153,16 @@ p.title-card {
   justify-content: center;
 }
 
+ion-avatar.profile-picture {
+    height: 87px;
+    width: 87px;
+}
+
+.bold-text-contact {
+    font-weight: bold;
+}
+
+.about-img {
+    border-radius: 5px;
+}
+
