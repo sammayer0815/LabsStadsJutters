@@ -26,6 +26,9 @@ import Settings from './pages/Settings';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Admin from './pages/Admin';
+import List from './pages/List';
+import Help from './pages/Help';
+import ChangePassword from './pages/ChangePassword';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -49,11 +52,8 @@ import './theme/variables.css';
 // Firebase 
 import { initializeApp } from 'firebase/app';
 import { config } from './config/config';
-import List from './pages/List';
-import Help from './pages/Help';
-import ChangePassword from './pages/ChangePassword';
 
-
+// Initialize Firebase
 export const Firebase = initializeApp(config.firebaseConfig);
 
 setupIonicReact();
@@ -74,7 +74,7 @@ const App: React.FC = () => (
             <Route path="/home/lists" component={Lists} exact />
             <Route path="/home/lists/list" component={List} exact />
             <Route path="/berichten" component={Message} exact />
-            <Route path="/berichten/community/:messageId" component={Messages} exact />
+            <Route path="/berichten/:messageId" component={Messages} exact />
             <Route path="/profiel" component={Profile} exact />
             <Route path="/profiel/instellingen" component={Settings} exact />
             <Route path="/profiel/contact" component={Contact}  exact />

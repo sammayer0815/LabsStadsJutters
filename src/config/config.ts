@@ -8,5 +8,8 @@ export const config = {
     messagingSenderId: "171234795967",
     appId: "1:171234795967:web:3853c9cff41cbc434d010a",
     measurementId: "G-BXB2RH6QY8"
+  },
+  geocodeConfig: {
+    apiKey: "6658ece21d079805452598ewjc2df9c"
   }
 };

@@ -5,7 +5,8 @@ import { IonToast, IonContent, IonHeader, IonPage, IonText, IonRow, IonCol, IonB
 import Logo from '../assets/Logo.svg';
 import './Login.css';
 
-const Login: React.FC = () => {
+  // Variables for Login page
+  const Login: React.FC = () => {
   const auth = getAuth();
   const history = useHistory();
   const [authing, setAuthing] = useState(false);
@@ -17,7 +18,7 @@ const Login: React.FC = () => {
   const [toast, setToast] = useState<{ show: boolean, message: string, color: string }>({ show: false, message: '', color: '' });
   
   useEffect(() => {
-    // Check if there's a toast message in the location state
+    // Check if there's a toast message
     if (location.state && (location.state as any).showToast) {
       const state = location.state as any;
       // Set the toast message state
@@ -27,31 +28,39 @@ const Login: React.FC = () => {
     }
   }, [location, history]);
 
+  // Function for signing in with Google
   const signInWithGoogle = async () => {
     setAuthing(true);
 
+    // Sign in with Google
     try {
       const response = await signInWithPopup(auth, new GoogleAuthProvider());
       console.log(response.user.uid);
+      // Redirect to home page after successful sign-in
       history.replace("/home");
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      // Error handling for Google sign-in
+      //console.error("Error signing in with Google:", error);
       setError("Google sign-in failed. Please try again.");
       setAuthing(false);
     }
   };
 
+  // Function for signing in with email and password
   const signInWithEmailPassword = async (event: any) => {
     event.preventDefault();
     setAuthing(true);
 
+    // Sign in with email and password
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response.user.uid);
+      // Redirect to home page after successful sign-in
       history.replace("/home");
+      // Error handling for email and password sign-in
     } catch (error) {
-      console.error("Error signing in with email/password:", error);
-      setError("Email/password sign-in failed. Please try again.");
+      //console.error("Error signing in with email/password:", error);
+      setError("Email/password inloggen mislukt. Probeer het opnieuw.");
       setAuthing(false);
     }
   };
