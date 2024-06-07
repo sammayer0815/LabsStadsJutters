@@ -45,9 +45,10 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
 
     // Loading screen display while checking authentication
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Laden...</div>;
     }
 
+    // Return User ID
     return (
         <AuthContext.Provider value={userId}>
             {children}
@@ -57,5 +58,5 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
 
 export default AuthRoute;
 
-// Hook to gather User ID
+// Variable to get user ID on other pages
 export const useUserId = () => useContext(AuthContext);

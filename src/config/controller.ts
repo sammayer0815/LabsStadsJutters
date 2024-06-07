@@ -24,4 +24,7 @@ export const chatCollection = collection(firestore, 'chat');
 export const messagesCollection = collection(firestore, 'messages');
 
 // Listings Collection
-export const listingsCollection = collection(firestore, 'listings');
+export const listingsCollection = collection(firestore, 'Products');
+
+// Users Collection
+export const usersCollection = collection(firestore, 'users');

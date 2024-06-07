@@ -32,8 +32,8 @@ const Contact: React.FC = () => {
                 <IonCardContent>
                   <h2 className='ion-text-center title-form'>Contactgegevens Stadsjutters</h2>
                   <div className='ion-margin-top'>
-                    <p>Telefoon: 06-123456789</p>
-                    <a href='mailto: stadsjuttersalmere@contact.com' className='link-mail'>Email: stadsjuttersalmere@contact.com</a>
+                    <p>Telefoon: 06-29315949</p>
+                    <a href='mailto: stadsjuttersalmere@gmail.com' className='link-mail'>Email: stadsjuttersalmere@contact.com</a>
                   </div>
                 </IonCardContent>
               </IonCard>

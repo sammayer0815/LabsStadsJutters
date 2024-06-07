@@ -42,6 +42,7 @@ import {
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { config } from "../config/config";
 
+// Initialize Firebase
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
@@ -52,6 +53,7 @@ const Lists: React.FC = () => {
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState(null);
 
+  // Function for card click
   const handleCardClick = (item: any) => {
     // history.push(`/lists/${user.name.first}`);
     history.push(`/home/lists/list?id=${item.productFile}`);
@@ -87,7 +89,8 @@ const Lists: React.FC = () => {
           ]);
 
           if (!userData.exists()) {
-            console.error(`No user document found with ID: ${product.user_id}`);
+            // User doesn't exist error
+            //console.error(`Geen gebruiker gevonden met id: ${product.user_id}`);
             return;
           }
           const user = userData.data();
@@ -127,45 +130,47 @@ const Lists: React.FC = () => {
         <IonGrid fixed>
           <IonRow class="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-              <IonList>
-                <IonItem lines="none" className="scroll">
-                  <IonButton
-                    color={"dark"}
-                    fill="outline"
-                    className="fixed-width-button"
-                  >
-                    <IonSelect
-                      aria-label="materiaal"
-                      placeholder="Materiaal"
-                      onIonChange={(e) => setSelectedMaterial(e.detail.value)}
-                    >
-                      <IonSelectOption value="hout">Hout</IonSelectOption>
-                      <IonSelectOption value="metaal">Metaal</IonSelectOption>
-                      <IonSelectOption value="plastic">Plastic</IonSelectOption>
-                      <IonSelectOption value="glas">Glas</IonSelectOption>
-                      <IonSelectOption value="overig">Overig</IonSelectOption>
-                    </IonSelect>
-                  </IonButton>
-                  <IonButton
-                    color={"dark"}
-                    fill="outline"
-                    className="fixed-width-button"
-                  >
-                    <IonSelect
-                      aria-label="conditie"
-                      placeholder="Conditie"
-                      onIonChange={(e) => setSelectedCondition(e.detail.value)}
-                    >
-                      <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
-                      <IonSelectOption value="zo-goed-als-nieuw">
-                        Zo goed als nieuw
-                      </IonSelectOption>
-                      <IonSelectOption value="gebruikt">
-                        Gebruikt
-                      </IonSelectOption>
-                      <IonSelectOption value="stuk">Stuk</IonSelectOption>
-                    </IonSelect>
-                  </IonButton>
+              <IonList className="filer-list-flex">
+                <IonItem lines="none" className="scroll" >
+                    <div className="filer-btn-gap">
+                        <IonButton
+                            color={"dark"}
+                            fill="outline"
+                            className="fixed-width-button"
+                        >
+                            <IonSelect
+                            aria-label="materiaal"
+                            placeholder="Materiaal"
+                            onIonChange={(e) => setSelectedMaterial(e.detail.value)}
+                            >
+                            <IonSelectOption value="hout">Hout</IonSelectOption>
+                            <IonSelectOption value="metaal">Metaal</IonSelectOption>
+                            <IonSelectOption value="plastic">Plastic</IonSelectOption>
+                            <IonSelectOption value="glas">Glas</IonSelectOption>
+                            <IonSelectOption value="overig">Overig</IonSelectOption>
+                            </IonSelect>
+                        </IonButton>
+                        <IonButton
+                            color={"dark"}
+                            fill="outline"
+                            className="fixed-width-button"
+                        >
+                            <IonSelect
+                            aria-label="conditie"
+                            placeholder="Conditie"
+                            onIonChange={(e) => setSelectedCondition(e.detail.value)}
+                            >
+                            <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
+                            <IonSelectOption value="zo-goed-als-nieuw">
+                                Zo goed als nieuw
+                            </IonSelectOption>
+                            <IonSelectOption value="gebruikt">
+                                Gebruikt
+                            </IonSelectOption>
+                            <IonSelectOption value="stuk">Stuk</IonSelectOption>
+                            </IonSelect>
+                        </IonButton>
+                    </div>
                 </IonItem>
               </IonList>
             </IonCol>
