@@ -26,6 +26,10 @@ import Settings from './pages/Settings';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Admin from './pages/Admin';
+
+import AdminUsers from './pages/AdminUsers';
+import AdminListings from './pages/AdminListings';
+
 import List from './pages/List';
 import Help from './pages/Help';
 import ChangePassword from './pages/ChangePassword';
@@ -80,6 +84,8 @@ const App: React.FC = () => (
             <Route path="/profiel/contact" component={Contact}  exact />
             <Route path="/profiel/over-ons" component={About} exact />
             <Route path="/profiel/admin" component={Admin} exact />
+            <Route path="/profiel/admin/users" component={AdminUsers} exact />
+            <Route path="/profiel/admin/listings" component={AdminListings} exact />
             <Route path="/profiel/wachtwoord-aanpassen" component={ChangePassword} exact />
           </AuthRoute>
 
