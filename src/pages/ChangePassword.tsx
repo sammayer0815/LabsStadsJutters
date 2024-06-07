@@ -46,11 +46,12 @@ const ChangePassword: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonButtons slot="start">
+      <IonHeader className="white-header" mode="ios">
+        <IonButtons slot="start" className="ion-margin">
           <IonBackButton defaultHref='/profiel/instellingen'></IonBackButton>
         </IonButtons>
       </IonHeader>
+
 
       <IonContent className="ion-padding">
         <IonGrid fixed>

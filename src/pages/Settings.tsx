@@ -22,6 +22,7 @@ const Settings: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();  
   
+  // Authentication user
   const auth = getAuth();
   const user = auth.currentUser; 
 
@@ -31,10 +32,10 @@ const Settings: React.FC = () => {
     const getUserDetails = async () => {
       // Check if user is logged in
       if (user) {
-        try { 
-          // Creates a reference to the Firestore document for the current user using the user's UID.
+        try {
+          
+          // Fetch the document 
           const userDoc = doc(firestore, "users", user.uid);
-          // Fetch the document
           const docSnap = await getDoc(userDoc);
           
           // If the document exists, it sets the user details in setUserDetails()
@@ -45,11 +46,11 @@ const Settings: React.FC = () => {
               usernameRef.current.value = docSnap.data().username;
             }
           } else {
-            console.log("No such document found!");
+            setToast({ show: true, message: 'Error: Geen document is niet gevonden!', color: 'danger' });
           }
 
         } catch (error) {
-          console.error(error);
+          setToast({ show: true, message: 'Error: ' + error, color: 'danger' });
         }
       }
     };
@@ -63,104 +64,109 @@ const Settings: React.FC = () => {
     setData((prev) => ({ ...prev, img: defaultImgUrl })); // Reset the image URL to the default one
   };
 
+  // Update user details
   const updateUserDetails = async (event: any) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-
+    event.preventDefault(); 
+  
     // Check if a user is logged in
-    if (user) {
-      try {
-        let profilePictureUrl = userDetails.profilePicture;
-        let newUsername = usernameRef.current?.value?.toString().trim() || userDetails.username;// Use the current value of the username input field
-
-        // Check if the username  contains only alphanumeric characters
-        const usernamePattern = /^[a-zA-Z0-9]+$/;
-        if (!newUsername) {
-          console.error("Username cannot be empty");
-          alert("Username cannot be empty");
-          return; 
-        } else if (!usernamePattern.test(newUsername)) {
-          console.error("Username can only contain alphanumeric characters");
-          alert("Username mag geen speciale tekens of spaties bevatten!");
-          return;
-        }
-
-        // Get the current user's username
-        const currentUserUsername = userDetails.username;
-
-        // Check if the new username is different from the current username
-        if (newUsername !== currentUserUsername) {
-          // Fetch all usernames from the database
-          const usersCollection = collection(firestore, "users");
-          const usersSnapshot = await getDocs(usersCollection);
-          const usernames = usersSnapshot.docs.map(doc => doc.data().username);
-
-          // Check if the new username is already taken
-          if (usernames.includes(newUsername)) {
-            console.error("Username is already taken");
-            alert("Deze gebruikersnaam is al in gebruik!");
-            return;
-          }
-        }
-        
-        // Check if there's a file selected
-        if (file) {
-          // Upload image in folder with  timestamp in milliseconds in the name to avoid file name collisions.
-          const name = `profile-pictures/${new Date().getTime()}-${file.name}`;
-          const storageRef = ref(storage, name);
-          const uploadTask = uploadBytesResumable(storageRef, file);
-
-          // Monitor the state of the upload task
-          await new Promise<void>((resolve, reject) => {
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {
-                // Update the upload progress
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                setPerc(progress);
-              },
-              (error) => {
-                console.log(error);
-                reject(error);
-              },
-              async () => {
-                // Once the upload is complete, get the download URL
-                profilePictureUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                setData((prev) => ({ ...prev, img: profilePictureUrl }));
-                resolve();
-              }
-            );
-          });
-        }
-
-        // Check if the delete picture is set
-        if (deletePicture) {
-          // Reset the image URL to the default one
-          const defaultImgUrl = "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg";
-          profilePictureUrl = defaultImgUrl;
-          setDeletePicture(false); 
-        }
-
-        // Update the user's profile details in the database
-        const userDoc = doc(firestore, "users", user.uid);
-        await updateDoc(userDoc, {
-          username: newUsername,
-          profilePicture: profilePictureUrl,
-        });
-        
-        
-        // Alert the user about successful update
-        setToast({ show: true, message: 'User details updated successfully!', color: 'success' });
-      } catch (error) {
-        console.error("Error updating details: ", error);
-        alert('Failed to update user details.');
+    if (!user) return;
+  
+    try {
+      let profilePictureUrl = userDetails.profilePicture;
+      const newUsername = usernameRef.current?.value?.toString().trim();
+  
+      // Check if the username is empty 
+      if (!newUsername) {
+        console.error("Username cannot be empty");
+        setToast({ show: true, message: 'Error: Gebruikersnaam mag niet leeg zijn', color: 'danger' });
+        return; 
       }
+
+      // Check if the username has special chars and/or spacings
+      const usernamePattern = /^[a-zA-Z0-9]+$/;
+      if (!usernamePattern.test(newUsername)) {
+        // console.error("Username can only contain alphanumeric characters");
+        setToast({ show: true, message: 'Error: Username mag geen speciale tekens of spaties bevatten!', color: 'danger' });
+        return;
+      }
+  
+      // Fetch all usernames from the database
+      const usersCollection = collection(firestore, "users");
+      const usersSnapshot = await getDocs(usersCollection);
+      const existingUsernames = usersSnapshot.docs.map(doc => doc.data().username?.toLowerCase());
+
+      // Check if the new username is already taken
+      if (existingUsernames.includes(newUsername.toLowerCase()) && newUsername.toLowerCase() !== userDetails.username.toLowerCase()) {
+        setToast({ show: true, message: 'Error: Username bestaat al!', color: 'danger' });
+        return;
+      }
+
+      // Check if there's a file selected
+      if (file) {
+        // Upload image in folder with  timestamp in milliseconds in the name to avoid file name collisions.
+        const name = `profile-pictures/${new Date().getTime()}-${file.name}`;
+        const storageRef = ref(storage, name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        // Monitor the state of the upload task
+        await new Promise<void>((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              // Update the upload progress
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              setPerc(progress);
+            },
+            (error) => {
+              console.log(error);
+              reject(error);
+            },
+            async () => {
+              // Once the upload is complete, get the download URL
+              profilePictureUrl = await getDownloadURL(uploadTask.snapshot.ref);
+              setData((prev) => ({ ...prev, img: profilePictureUrl }));
+              resolve();
+            }
+          );
+        });
+      }
+
+      // Check if the delete picture is set
+      if (deletePicture) {
+        // Reset the image URL to the default one
+        const defaultImgUrl = "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg";
+        profilePictureUrl = defaultImgUrl;
+        setDeletePicture(false); 
+      }
+
+      // Update user details in the database
+      const userDoc = doc(firestore, "users", user.uid);
+      await updateDoc(userDoc, {
+        username: newUsername,
+        profilePicture: profilePictureUrl,
+        
+      });
+
+      // Update the userDetails state
+      setUserDetails({
+        ...userDetails,
+        username: newUsername,
+        profilePicture: profilePictureUrl
+      });
+      // Successful toast update
+      setToast({ show: true, message: 'Gebruikersgegevens zijn succesvol bijgewerkt!', color: 'success' });
+    } catch (error) {
+      console.error("Error updating details: ", error);
+      setToast({ show: true, message: 'Error: kan gebruikersgegevens niet bijwerken.', color: 'danger' });
     }
   };
 
+  // Open file
   const openFileDialog = () => {
     (document as any).getElementById("file").click();
   };
 
+  // Preview profile picture
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
@@ -177,11 +183,11 @@ const Settings: React.FC = () => {
 
       // Update the file state
       setFile(selectedFile);
-
       e.target.value = '';
     }
   };
 
+  // Delete user
   const handleDeleteUserClick = async () => {
     if (user) {
       try {
@@ -194,8 +200,7 @@ const Settings: React.FC = () => {
           state: { showToast: true, toastMessage: 'You have successfully deleted your account!', toastColor: 'success' }
         });
       } catch (error) {
-        console.error("Error updating details: ", error);
-        alert('Failed to delete user');
+          setToast({ show: true, message: 'Kan gebruiker niet verwijderen', color: 'success' });
       }
     }
   }
@@ -257,8 +262,8 @@ const Settings: React.FC = () => {
                 <form onSubmit={updateUserDetails} className='gap-form'>
                   <h2 className='ion-text-center title-form'>Account gegevens</h2>
                   <IonInput type='email' className="register-input" mode="md" label="Email" labelPlacement="floating" fill='outline' name="email" value={user?.email} disabled={true}></IonInput>
-                  <IonInput type='text' className="register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' name="username" value={userDetails.username} ref={usernameRef} onIonChange={(e) => setUserDetails({ ...userDetails, username: e.detail.value?.trim() })}></IonInput>
-                  <span><a href='/forgot-password' className='underline'>Wachtwoord aanpassen</a></span>
+                  <IonInput type='text' className="register-input" mode="md" label="Gebruikersnaam" labelPlacement="floating" fill='outline' name="username" value={userDetails?.username || ''} ref={usernameRef} onIonChange={(e) => setUserDetails({ ...userDetails, username: e.detail.value?.trim() })}></IonInput>
+                  <span><a href='/profiel/wachtwoord-aanpassen' className='underline'>Wachtwoord aanpassen</a></span>
                   <IonButton type='submit' mode="ios" className="ion-margin-top" expand='block' color={'secondary'} disabled={per !== null && per < 100}>Update account</IonButton>
                 </form>
               )}
