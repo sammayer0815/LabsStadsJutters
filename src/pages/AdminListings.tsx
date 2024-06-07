@@ -3,12 +3,9 @@ import { addCircleOutline, bookmarkOutline, callOutline, constructOutline, image
 import React from 'react';
 import NavTabs from '../components/Nav';
 import './style.css';
-import { useHistory } from 'react-router-dom';
 
-const Admin: React.FC = () => {
 
-  const history = useHistory();
-
+const AdminListings: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -21,11 +18,11 @@ const Admin: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList className='list-profile'>
-        <IonItem button onClick={() => history.push('/profiel/admin/users')}>
+          <IonItem button>
             <IonIcon className='ion-margin-end' aria-hidden="true" icon={peopleOutline} />
             <IonLabel>Bekijk alle gebruikers</IonLabel>
           </IonItem>
-          <IonItem button onClick={() => history.push('/profiel/admin/listings')}>
+          <IonItem button>
             <IonIcon className='ion-margin-end' aria-hidden="true" icon={imagesOutline} />
             <IonLabel>Bekijk alle advertenties</IonLabel>
           </IonItem>
@@ -45,4 +42,4 @@ const Admin: React.FC = () => {
   );
 };
 
-export default Admin;
+export default AdminListings;
