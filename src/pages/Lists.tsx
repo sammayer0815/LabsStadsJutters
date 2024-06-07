@@ -89,7 +89,8 @@ const Lists: React.FC = () => {
           ]);
 
           if (!userData.exists()) {
-            console.error(`No user document found with ID: ${product.user_id}`);
+            // User doesn't exist error
+            //console.error(`Geen gebruiker gevonden met id: ${product.user_id}`);
             return;
           }
           const user = userData.data();

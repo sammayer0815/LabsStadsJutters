@@ -37,13 +37,13 @@ const Messages: React.FC = () => {
                         setListingId(messageData.listingId);
                     } else {
                         // Message not found error
-                        setErrorMessage('Message not found');
+                        setErrorMessage('Bericht niet gevonden');
                     }
                 }
             } catch (error) {
                 // Error fetching message details
                 //console.error("Error fetching message details:", error);
-                setErrorMessage('Error fetching message details');
+                setErrorMessage('Error ophalen van gegevens');
             }
         };
 
@@ -90,7 +90,7 @@ const Messages: React.FC = () => {
         // Check if receiverId and listingId are set
         if (!receiverId || !listingId) {
             // Error message for missing receiverId and listingId
-            setErrorMessage('Receiver ID and Listing ID are required');
+            setErrorMessage('Ontvanger en/of advertentie niet gevonden');
             return;
         }
     
@@ -118,7 +118,8 @@ const Messages: React.FC = () => {
             setErrorMessage('');
             document.getElementById('imageUpload')!.value = ''; 
         } catch (error) {
-            console.error("Error adding message:", error);
+            // Error adding message
+            //console.error("Error adding message:", error);
         }
     };    
 
@@ -134,7 +135,8 @@ const Messages: React.FC = () => {
                 console.log("Image uploaded:", downloadURL);
                 setSelectedImageUrl(downloadURL);
             } catch (error) {
-                console.error("Error uploading image:", error);
+                // Error uploading image
+                //console.error("Error uploading image:", error);
             }
         }
     };    

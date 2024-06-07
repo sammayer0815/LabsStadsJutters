@@ -96,7 +96,8 @@ const Messages: React.FC = () => {
         
                 setMessages(sortedMessages);
             } catch (error) {
-                console.error('Error fetching messages:', error);
+                // Error fetching messages
+                //console.error('Error fetching messages:', error);
             } finally {
                 setLoading(false);
             }
@@ -130,9 +131,9 @@ const Messages: React.FC = () => {
             </IonHeader>
             <IonContent fullscreen>
             {loading ? (
-                <IonLabel>Loading...</IonLabel>
+                <IonLabel>Laden...</IonLabel>
             ) : messages.length === 0 ? (
-                <IonLabel>No messages found</IonLabel>
+                <IonLabel>Gebruiker heeft geen berichten.</IonLabel>
             ) : (
                 messages.map((chat, index) => (
                     <Link to={`/berichten/${chat.messageId}`} key={index}>
@@ -140,7 +141,7 @@ const Messages: React.FC = () => {
                             <IonImg className='image' src={chat.listingImage} alt="Product" />
                             <div className='content'>
                                 <IonLabel className='title'>{chat.listingName}</IonLabel>
-                                <IonLabel className='name'>{chat.senderUsername}</IonLabel> {/* Display sender's username */}
+                                <IonLabel className='name'>{chat.senderUsername}</IonLabel> 
                                 <IonLabel className='receivedMessage'>
                                     {chat.message ? (
                                         chat.message

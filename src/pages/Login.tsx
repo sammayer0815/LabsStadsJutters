@@ -40,7 +40,7 @@ import './Login.css';
       history.replace("/home");
     } catch (error) {
       // Error handling for Google sign-in
-      console.error("Error signing in with Google:", error);
+      //console.error("Error signing in with Google:", error);
       setError("Google sign-in failed. Please try again.");
       setAuthing(false);
     }
@@ -59,8 +59,8 @@ import './Login.css';
       history.replace("/home");
       // Error handling for email and password sign-in
     } catch (error) {
-      console.error("Error signing in with email/password:", error);
-      setError("Email/password sign-in failed. Please try again.");
+      //console.error("Error signing in with email/password:", error);
+      setError("Email/password inloggen mislukt. Probeer het opnieuw.");
       setAuthing(false);
     }
   };

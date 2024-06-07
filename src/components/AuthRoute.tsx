@@ -45,7 +45,7 @@ const AuthRoute: React.FC<IAuthRouteProps> = ({ children }) => {
 
     // Loading screen display while checking authentication
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Laden...</div>;
     }
 
     // Return User ID

@@ -150,7 +150,7 @@ const List: React.FC = () => {
 
     // Loading for fetching data
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Laden...</div>;
     }
 
     // Front end for the listing

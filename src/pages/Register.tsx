@@ -32,18 +32,18 @@ const Register: React.FC = () => {
 
     // Check if username is empty or doesn't match the pattern
     if (!username.trim()) {
-      console.error("Username cannot be empty");
+      console.error("Gebuikersnaam kan niet leeg zijn");
       alert("Username cannot be empty");
       return;
     } else if (!inputTextPattern.test(username)) {
-      console.error("Username must contain only alphanumeric characters");
+      console.error("Gebruikersnaam kan geen speciale tekens bevatten");
       alert("Username can't have special chars");
       return;
     }
 
     // Confirm repeated password
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Wachtwoorden komen niet overeen");
       return;
     }
     setAuthing(true); // Set authing state to true to indicate the authentication process is ongoing
@@ -55,7 +55,7 @@ const Register: React.FC = () => {
 
     // Check if the new username is already taken
     if (usernames.includes(username)) {
-      console.error("Username is already taken");
+      console.error("Gebruikersnaam is al in gebruik");
       alert("Deze gebruikersnaam is al in gebruik!");
       setAuthing(false);
       return;
@@ -81,13 +81,13 @@ const Register: React.FC = () => {
 
       // Handle errors during registration
     } catch (error: any) {
-      console.error("Error registering with email/password:", error);
+      //console.error("Error registering with email/password:", error);
   
       // Handling specific error codes
       if (error.code === 'auth/email-already-in-use') {
-        setError("This email is already in use. Please use a different email.");
+        setError("Dit emailadres is al in gebruik. Probeer een ander emailadres.");
       } else {
-        setError("Registration failed. Please try again.");
+        setError("Registratie mislukt. Probeer het opnieuw.");
       }
       setAuthing(false);
     }
