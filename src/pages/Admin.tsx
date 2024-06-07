@@ -6,41 +6,40 @@ import './style.css';
 
 
 const Admin: React.FC = () => {
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
-                    <IonButtons>
-                        <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
-                    </IonButtons>
-                    <IonTitle>Admin</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <IonList className='list-profile'>
-                    <IonItem button>
-                        <IonIcon className='ion-margin-end' aria-hidden="true" icon={peopleOutline} />
-                        <IonLabel>Bekijk alle gebruikers</IonLabel>
-                    </IonItem>
-                    <IonItem button>
-                        <IonIcon className='ion-margin-end'  aria-hidden="true" icon={imagesOutline} />
-                        <IonLabel>Bekijk alle advertenties</IonLabel>
-                    </IonItem>
-                    <IonItem button>
-                        <IonIcon className='ion-margin-end'  aria-hidden="true" icon={constructOutline} />
-                        <IonLabel>Beheer categorie</IonLabel>
-                    </IonItem>
-                    <IonItem button>
-                        <IonIcon className='ion-margin-end'  aria-hidden="true" icon={constructOutline} />
-                        <IonLabel>Beheer materiaal</IonLabel>
-                    </IonItem>
-                </IonList>
-            </IonContent>
-            {/* Nav */}
-            <NavTabs />
-        </IonPage>
-    );
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+          <IonButtons>
+            <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
+          </IonButtons>
+          <IonTitle>Admin</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonList className='list-profile'>
+          <IonItem button>
+            <IonIcon className='ion-margin-end' aria-hidden="true" icon={peopleOutline} />
+            <IonLabel>Bekijk alle gebruikers</IonLabel>
+          </IonItem>
+          <IonItem button>
+            <IonIcon className='ion-margin-end' aria-hidden="true" icon={imagesOutline} />
+            <IonLabel>Bekijk alle advertenties</IonLabel>
+          </IonItem>
+          <IonItem button>
+            <IonIcon className='ion-margin-end' aria-hidden="true" icon={constructOutline} />
+            <IonLabel>Beheer categorie</IonLabel>
+          </IonItem>
+          <IonItem button>
+            <IonIcon className='ion-margin-end' aria-hidden="true" icon={constructOutline} />
+            <IonLabel>Beheer materiaal</IonLabel>
+          </IonItem>
+        </IonList>
+      </IonContent>
+      {/* Nav */}
+      <NavTabs />
+    </IonPage>
+  );
 };
 
 export default Admin;
