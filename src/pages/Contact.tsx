@@ -6,47 +6,45 @@ import './Login.css';
 import './style.css';
 
 const Contact: React.FC = () => {
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
-                    <IonButtons>
-                        <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
-                    </IonButtons>
-                    <IonTitle>Contact</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <IonGrid fixed> 
-                    <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6" className='ion-text-center'>
-                            <p className='ion-margin-top'>
-                                Hulp nodig? Contacteer ons via mail of telefoon.
-                            </p>
-                        </IonCol>
-                    </IonRow>
-                    {/*Contactgegevens Stadsjutters*/} 
-                    <IonRow class="ion-justify-content-center">
-                        <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6">
-                            <IonCard>
-                                <IonCardContent>
-                                    <h2 className='ion-text-center title-form'>Contactgegevens Stadsjutters</h2>
-                                    <div className='ion-margin-top'>
-                                        <p>Telefoon: 06-123456789</p>
-                                        <a href='mailto: stadsjuttersalmere@contact.com' className='link-mail'>Email: stadsjuttersalmere@contact.com</a>
-                                    </div>
-                                </IonCardContent>
-                            </IonCard>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-
-            </IonContent>
-            {/* Nav */}
-            <NavTabs />
-        </IonPage>
-    );
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+          <IonButtons>
+            <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
+          </IonButtons>
+          <IonTitle>Contact</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonGrid fixed> 
+          <IonRow class="ion-justify-content-center">
+            <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6" className='ion-text-center'>
+              <p className='ion-margin-top'>
+                Hulp nodig? Contacteer ons via mail of telefoon.
+              </p>
+            </IonCol>
+          </IonRow>
+          {/*Contactgegevens Stadsjutters*/} 
+          <IonRow class="ion-justify-content-center">
+            <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="6">
+              <IonCard>
+                <IonCardContent>
+                  <h2 className='ion-text-center title-form'>Contactgegevens Stadsjutters</h2>
+                  <div className='ion-margin-top'>
+                    <p>Telefoon: 06-123456789</p>
+                    <a href='mailto: stadsjuttersalmere@contact.com' className='link-mail'>Email: stadsjuttersalmere@contact.com</a>
+                  </div>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+      {/* Nav */}
+      <NavTabs />
+    </IonPage>
+  );
 };
 
 export default Contact;

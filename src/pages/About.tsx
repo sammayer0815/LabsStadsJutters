@@ -5,24 +5,23 @@ import NavTabs from '../components/Nav';
 import './style.css';
 
 const About: React.FC = () => {
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
-                    <IonButtons>
-                        <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
-                    </IonButtons>
-                    <IonTitle>Over Ons</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-              Test
-            </IonContent>
-            {/* Nav */}
-            <NavTabs />
-        </IonPage>
-    );
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+          <IonButtons>
+            <IonBackButton defaultHref='/profiel' text=""></IonBackButton> 
+          </IonButtons>
+          <IonTitle>Over Ons</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        Test
+      </IonContent>
+      {/* Nav */}
+      <NavTabs />
+    </IonPage>
+  );
 };
 
 export default About;

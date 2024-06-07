@@ -6,7 +6,7 @@ import Logo from '../assets/Logo.svg';
 import './Login.css';
 
 import { firestore } from '../config/controller';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, query, where, getDocs, collection }  from 'firebase/firestore';
 
 const Register: React.FC = () => {
   const auth = getAuth();
@@ -17,15 +17,29 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Refs to handle input fields 
-  // Couldn't use useState on these: an empty string would be send on the last filled field before submitting
+  // Refs to handle username input fields
   const usernameRef = useRef<HTMLIonInputElement>(null);
+  
 
   const registerWithEmailAndPassword = async (event: any) => {
     event.preventDefault();
 
     // Get username value from the input fields using refs
     const username = usernameRef.current?.value as string;
+
+    // Pattern for input text fields
+    const inputTextPattern = /^[a-zA-Z0-9]+$/;
+
+    // Check if username is empty or doesn't match the pattern
+    if (!username.trim()) {
+      console.error("Username cannot be empty");
+      alert("Username cannot be empty");
+      return;
+    } else if (!inputTextPattern.test(username)) {
+      console.error("Username must contain only alphanumeric characters");
+      alert("Username can't have special chars");
+      return;
+    }
 
     // Confirm repeated password
     if (password !== confirmPassword) {
@@ -34,8 +48,22 @@ const Register: React.FC = () => {
     }
     setAuthing(true); // Set authing state to true to indicate the authentication process is ongoing
 
+    // Fetch all usernames from the database
+    const usersCollection = collection(firestore, "users");
+    const usersSnapshot = await getDocs(usersCollection);
+    const usernames = usersSnapshot.docs.map(doc => doc.data().username);
+
+    // Check if the new username is already taken
+    if (usernames.includes(username)) {
+      console.error("Username is already taken");
+      alert("Deze gebruikersnaam is al in gebruik!");
+      setAuthing(false);
+      return;
+    }
+
     // Create new user using Firebase Authentication
     try {
+      
       const response = await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser; // Get the currently authenticated user
 
@@ -52,10 +80,16 @@ const Register: React.FC = () => {
       history.replace("/home");
 
       // Handle errors during registration
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error registering with email/password:", error);
-      setError("Registration failed. Please try again.");
-      setAuthing(false); // Reset authing state
+  
+      // Handling specific error codes
+      if (error.code === 'auth/email-already-in-use') {
+        setError("This email is already in use. Please use a different email.");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+      setAuthing(false);
     }
   };
 
@@ -93,10 +127,10 @@ const Register: React.FC = () => {
                   <form onSubmit={registerWithEmailAndPassword}>
                     <h2 className='ion-text-center title-form'>Aanmelden bij Stadsjutters</h2>
                     {error && <IonText color="danger">{error}</IonText>}
-                    <IonInput ref={usernameRef} type='text' className="ion-margin-top register-input" mode="md" label="Gebruikersnaam" name="username" labelPlacement="floating" fill='outline' />
-                    <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" name="email" labelPlacement="floating" fill='outline'  onIonChange={(e) => setEmail(e.detail.value!)} />
-                    <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" name="password" labelPlacement="floating" fill='outline'  onIonChange={(e) => setPassword(e.detail.value!)} />
-                    <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" name="confirmPassword" labelPlacement="floating" fill='outline' onIonChange={(e) => setConfirmPassword(e.detail.value!)} />
+                    <IonInput type='text' className="ion-margin-top register-input" mode="md" label="Gebruikersnaam" name="username" labelPlacement="floating" fill='outline' ref={usernameRef}  required/>
+                    <IonInput type='email' className="ion-margin-top register-input" mode="md" label="Email" name="email" labelPlacement="floating" fill='outline'  onIonChange={(e) => setEmail(e.detail.value!)} required/>
+                    <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Wachtwoord" name="password" labelPlacement="floating" fill='outline'  onIonChange={(e) => setPassword(e.detail.value!)} required/>
+                    <IonInput type='password' className="ion-margin-top register-input" mode="md" label="Herhaal Wachtwoord" name="confirmPassword" labelPlacement="floating" fill='outline' onIonChange={(e) => setConfirmPassword(e.detail.value!)} required/>
                     <IonButton type='submit' mode='ios' className="ion-margin-top" expand='block' color='secondary' disabled={authing}>Register</IonButton>
                   </form>
                 </IonCardContent>

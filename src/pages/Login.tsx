@@ -68,7 +68,6 @@ const Login: React.FC = () => {
     <IonPage>
       <IonHeader>
       </IonHeader>
-
       <IonContent className="ion-padding">
         <IonGrid fixed>
           <IonRow class="ion-justify-content-center">
