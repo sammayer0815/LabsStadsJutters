@@ -42,6 +42,7 @@ import {
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { config } from "../config/config";
 
+// Initialize Firebase
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
@@ -52,6 +53,7 @@ const Lists: React.FC = () => {
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [selectedCondition, setSelectedCondition] = useState(null);
 
+  // Function for card click
   const handleCardClick = (item: any) => {
     // history.push(`/lists/${user.name.first}`);
     history.push(`/home/lists/list?id=${item.productFile}`);

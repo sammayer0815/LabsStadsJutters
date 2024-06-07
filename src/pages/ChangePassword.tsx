@@ -5,7 +5,8 @@ import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCol, 
 import Logo from '../assets/Logo.svg';
 import './Login.css';
 
-const ChangePassword: React.FC = () => {
+// Consts for the ForgotPassword component
+  const ChangePassword: React.FC = () => {
   const router = useIonRouter();
   const auth = getAuth();
   const history = useHistory();
@@ -15,8 +16,9 @@ const ChangePassword: React.FC = () => {
   const [success, setSuccess] = useState('');
 
   const requestPassword = async (event: any) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
     setSending(true);
+    // Error and success empty messages
     setError('');
     setSuccess('');
 
@@ -27,16 +29,21 @@ const ChangePassword: React.FC = () => {
         return;
       }
 
-      console.log("Email:", email);
+      // Console log for seeing the email
+      // console.log("Email:", email);
 
+      // Send password reset email
       await sendPasswordResetEmail(auth, email);
 
       // Password reset email sent successfully
       setSuccess('Wachtwoord reset link is verzonden naar je e-mailadres. Controleer je inbox of spam folder.');
       setTimeout(() => {
+        // Redirect to login page after 5 seconds after success message
         history.push("/login");
       }, 5000);
+      // Error handling send mail
     } catch (error) {
+      // Error messages
       console.error("Error mail verzenden:", error);
       setError('Wachtwoord reset link kon niet worden verzonden. Probeer het opnieuw.');
     } finally {
@@ -44,6 +51,7 @@ const ChangePassword: React.FC = () => {
     }
   };
 
+  // Frontend of the ForgotPassword component
   return (
     <IonPage>
       <IonHeader>

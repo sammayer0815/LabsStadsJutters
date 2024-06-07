@@ -1,35 +1,49 @@
+a {
+  text-decoration: none;
+}
+
 .messageList {
   margin-top: 30px;
 }
 
 .image {
-    width: 90px; 
-    height: 90px; 
-    margin-right: 10px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
+  width: 90px; 
+  height: 90px; 
+  margin-right: 10px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
-  .title {
-    margin-bottom: 10px;
-  }
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 
-  .name {
-    margin-bottom: 2px; 
-    font-weight: bold;
-  }
+.title {
+  margin-bottom: 10px;
+}
 
-  .receivedMessage {
-    margin-bottom: 5px;
-  }
-  
-  .date {
-    align-self: flex-end; 
-  }
-  
+.name {
+  margin-bottom: 2px; 
+  font-weight: bold;
+}
+
+.receivedMessage {
+  display: flex;
+  align-items: center;
+}
+
+.imageText {
+  display: flex;
+  align-items: center;
+  color: #666;
+}
+
+.imageText ion-icon {
+  margin-right: 5px;
+}
+
+.date {
+  align-self: flex-end; 
+}

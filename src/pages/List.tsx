@@ -1,18 +1,18 @@
 import {
-  IonBackButton,
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonPage,
-  IonRow,
-  IonTitle,
-  IonToolbar,
-  IonModal,
-  IonImg
+    IonBackButton,
+    IonButton,
+    IonButtons,
+    IonCol,
+    IonContent,
+    IonGrid,
+    IonHeader,
+    IonIcon,
+    IonPage,
+    IonRow,
+    IonTitle,
+    IonToolbar,
+    IonModal,
+    IonImg
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import './style.css';
@@ -28,27 +28,30 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/zoom';
 import '@ionic/react/css/ionic-swiper.css';
 import NavTabs from '../components/Nav';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, addDoc, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { config } from "../config/config";
+import { useUserId } from "../components/AuthRoute";
 
+// Firebase App
 const app = initializeApp(config.firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
 
 const List: React.FC = () => {
     const location = useLocation();
+    const history = useHistory();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("id");
+    const userId = useUserId();
 
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [images, setImages] = useState<string[]>([]);
     const [username, setUsername] = useState<string>('');
-    const [selectedImage, setSelectedImage] = useState<string | null>(null); // New state for selected image
-    const currentUserId = "TfHL4seqQeOVmdl9eYE2IsNsQSR2"; // Assume this is the logged-in user's ID
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,7 +79,8 @@ const List: React.FC = () => {
 
         fetchData();
     }, [id]);
-
+    
+    // Fetch images for the product
     useEffect(() => {
         if (data) {
             const fetchImages = async () => {
@@ -94,36 +98,62 @@ const List: React.FC = () => {
         }
     }, [data]);
 
+    // Function to handle sending a message
     const handleSendMessage = async () => {
         if (data) {
-            const messageData = {
-                listingId: id,
-                receiverId: data.user_id,
-                senderId: currentUserId,
-                timestamp: new Date(),
-            };
+            const messagesQuery = query(
+                collection(db, "messages"),
+                where("listingId", "==", id),
+                where("senderId", "==", userId),
+                where("receiverId", "==", data.user_id)
+            );
 
-            try {
-                await addDoc(collection(db, "messages"), messageData);
-                console.log("Message sent!");
-            } catch (error) {
-                console.error("Error sending message: ", error);
+            // Check if there is an existing message of same user and listing
+            const querySnapshot = await getDocs(messagesQuery);
+            if (!querySnapshot.empty) {
+                // Navigate to the existing message of same user and listing
+                const existingMessage = querySnapshot.docs[0];
+                history.push(`/berichten/${existingMessage.id}`);
+            } else {
+                // Create a new message
+                const messageData = {
+                    listingId: id,
+                    receiverId: data.user_id,
+                    senderId: userId,
+                    timestamp: new Date(),
+                };
+
+                // Add the message to the messages collection
+                try {
+                    const docRef = await addDoc(collection(db, "messages"), messageData);
+                    //console.log("Message sent!");
+
+                    // Redirect to the new chat route with the message ID
+                    history.push(`/berichten/${docRef.id}`);
+                } catch (error) {
+                    // Error handling for sending message
+                    //console.error("Error sending message: ", error);
+                }
             }
         }
     };
 
+    // Function to zoom image on click
     const handleImageClick = (imageUrl: string) => {
         setSelectedImage(imageUrl);
     };
 
+    // Function to close zoomed image
     const closeModal = () => {
         setSelectedImage(null);
     };
 
+    // Loading for fetching data
     if (loading) {
         return <div>Loading...</div>;
     }
 
+    // Front end for the listing
     return (
         <IonPage>
             <IonHeader>

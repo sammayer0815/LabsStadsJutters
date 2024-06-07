@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar, IonIcon, IonModal, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonTitle, IonToolbar, IonIcon, IonModal, IonButton, IonButtons, IonBackButton } from '@ionic/react';
 import { sendSharp, imageOutline, closeOutline } from 'ionicons/icons';
 import './Messages.css';
 import { useEffect, useState } from 'react';
@@ -23,9 +23,11 @@ const Messages: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const history = useHistory();
 
+    // Fetch message details
     useEffect(() => {
         const fetchMessageDetails = async () => {
             try {
+                // Fetch the senderId, receiverId, and listingId from the message
                 if (messageId) {
                     const messageDoc = await getDoc(doc(messagesCollection, messageId));
                     if (messageDoc.exists()) {
@@ -34,20 +36,25 @@ const Messages: React.FC = () => {
                         setReceiverId(messageData.receiverId);
                         setListingId(messageData.listingId);
                     } else {
+                        // Message not found error
                         setErrorMessage('Message not found');
                     }
                 }
             } catch (error) {
-                console.error("Error fetching message details:", error);
+                // Error fetching message details
+                //console.error("Error fetching message details:", error);
                 setErrorMessage('Error fetching message details');
             }
         };
 
+        // Fetch message details
         fetchMessageDetails();
     }, [messageId]);
 
     useEffect(() => {
+        // Check if user has permission to the message
         if (userId && messageId && senderId && receiverId) {
+            // Redirect to messages page if user is not the sender or receiver of the message
             if (userId !== senderId && userId !== receiverId) {
                 history.push("/berichten");
             } else {
@@ -74,16 +81,20 @@ const Messages: React.FC = () => {
         }
     }, [userId, senderId, receiverId, messageId, history]);
 
+    // Add a new message to the chat
     const handleAddMessage = async () => {
         if (!newMessage.trim() && !selectedImageUrl) {
             return;
         }
     
+        // Check if receiverId and listingId are set
         if (!receiverId || !listingId) {
+            // Error message for missing receiverId and listingId
             setErrorMessage('Receiver ID and Listing ID are required');
             return;
         }
     
+        // Add the new message to the chat
         try {
             const timestamp = Timestamp.now();
             const message = newMessage;
@@ -98,17 +109,20 @@ const Messages: React.FC = () => {
                 imageUrl: selectedImageUrl
             });
     
-            console.log("Message added successfully!");
+            // Log message added successfully
+            //console.log("Message added successfully!");
     
+            // Clear the message input and selected image for the next message
             setNewMessage('');
             setSelectedImageUrl(''); 
             setErrorMessage('');
-            document.getElementById('imageUpload')!.value = ''; // Reset the file input to allow re-uploading the same image
+            document.getElementById('imageUpload')!.value = ''; 
         } catch (error) {
             console.error("Error adding message:", error);
         }
     };    
 
+    // Upload image to Firebase Storage
     const handleUploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -125,15 +139,20 @@ const Messages: React.FC = () => {
         }
     };    
 
+    // Zoom in on image when clicked
     const openImageModal = (imageUrl: string) => {
         setSelectedImage(imageUrl);
         setIsModalOpen(true);
     };
 
+    // Frontend messages page
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar color={'secondary'} className='custom-toolbar' mode='ios'>
+                <IonButtons>
+                        <IonBackButton defaultHref='/berichten' text=""></IonBackButton>
+                    </IonButtons>
                     <IonTitle>Berichten</IonTitle>
                 </IonToolbar>
             </IonHeader>
@@ -149,7 +168,7 @@ const Messages: React.FC = () => {
                             <img 
                                 src={message.imageUrl} 
                                 alt="uploaded" 
-                                className="messageImage" // Apply the CSS class here
+                                className="messageImage"
                                 onClick={() => openImageModal(message.imageUrl)}
                             />}
                         <p>{message.message}</p>
@@ -188,14 +207,14 @@ const Messages: React.FC = () => {
                 </IonItem>
                 {errorMessage && <p className="errorMessage">{errorMessage}</p>}
                 
-                <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
-                    <div className="imageModalContent">
+                <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)} className="custom-modal">
+                    <div className="modal-content">
                         <IonIcon 
                             icon={closeOutline} 
                             onClick={() => setIsModalOpen(false)} 
-                            style={{ cursor: 'pointer', position: 'absolute', top: '10px', right: '10px', fontSize: '24px' }} 
+                            className="close-icon"
                         />
-                        <img src={selectedImage} alt="enlarged" style={{ width: '100%', height: 'auto' }} />
+                        <img src={selectedImage} alt="enlarged" className="modal-image" />
                     </div>
                 </IonModal>
             </IonContent>
