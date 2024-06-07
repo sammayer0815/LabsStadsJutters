@@ -130,45 +130,47 @@ const Lists: React.FC = () => {
         <IonGrid fixed>
           <IonRow class="ion-justify-content-center">
             <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
-              <IonList>
-                <IonItem lines="none" className="scroll">
-                  <IonButton
-                    color={"dark"}
-                    fill="outline"
-                    className="fixed-width-button"
-                  >
-                    <IonSelect
-                      aria-label="materiaal"
-                      placeholder="Materiaal"
-                      onIonChange={(e) => setSelectedMaterial(e.detail.value)}
-                    >
-                      <IonSelectOption value="hout">Hout</IonSelectOption>
-                      <IonSelectOption value="metaal">Metaal</IonSelectOption>
-                      <IonSelectOption value="plastic">Plastic</IonSelectOption>
-                      <IonSelectOption value="glas">Glas</IonSelectOption>
-                      <IonSelectOption value="overig">Overig</IonSelectOption>
-                    </IonSelect>
-                  </IonButton>
-                  <IonButton
-                    color={"dark"}
-                    fill="outline"
-                    className="fixed-width-button"
-                  >
-                    <IonSelect
-                      aria-label="conditie"
-                      placeholder="Conditie"
-                      onIonChange={(e) => setSelectedCondition(e.detail.value)}
-                    >
-                      <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
-                      <IonSelectOption value="zo-goed-als-nieuw">
-                        Zo goed als nieuw
-                      </IonSelectOption>
-                      <IonSelectOption value="gebruikt">
-                        Gebruikt
-                      </IonSelectOption>
-                      <IonSelectOption value="stuk">Stuk</IonSelectOption>
-                    </IonSelect>
-                  </IonButton>
+              <IonList className="filer-list-flex">
+                <IonItem lines="none" className="scroll" >
+                    <div className="filer-btn-gap">
+                        <IonButton
+                            color={"dark"}
+                            fill="outline"
+                            className="fixed-width-button"
+                        >
+                            <IonSelect
+                            aria-label="materiaal"
+                            placeholder="Materiaal"
+                            onIonChange={(e) => setSelectedMaterial(e.detail.value)}
+                            >
+                            <IonSelectOption value="hout">Hout</IonSelectOption>
+                            <IonSelectOption value="metaal">Metaal</IonSelectOption>
+                            <IonSelectOption value="plastic">Plastic</IonSelectOption>
+                            <IonSelectOption value="glas">Glas</IonSelectOption>
+                            <IonSelectOption value="overig">Overig</IonSelectOption>
+                            </IonSelect>
+                        </IonButton>
+                        <IonButton
+                            color={"dark"}
+                            fill="outline"
+                            className="fixed-width-button"
+                        >
+                            <IonSelect
+                            aria-label="conditie"
+                            placeholder="Conditie"
+                            onIonChange={(e) => setSelectedCondition(e.detail.value)}
+                            >
+                            <IonSelectOption value="nieuw">Nieuw</IonSelectOption>
+                            <IonSelectOption value="zo-goed-als-nieuw">
+                                Zo goed als nieuw
+                            </IonSelectOption>
+                            <IonSelectOption value="gebruikt">
+                                Gebruikt
+                            </IonSelectOption>
+                            <IonSelectOption value="stuk">Stuk</IonSelectOption>
+                            </IonSelect>
+                        </IonButton>
+                    </div>
                 </IonItem>
               </IonList>
             </IonCol>

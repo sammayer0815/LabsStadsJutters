@@ -16,7 +16,7 @@ const About: React.FC = () => {
           <IonTitle>Over Ons</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding-horizontal">
       <IonRow class="ion-justify-content-center">
         <IonCol size="12" sizeMd="8" sizeLg="6" sizeXl="4">
           {/* Logo */}
@@ -54,7 +54,7 @@ const About: React.FC = () => {
             <p>Geen van bovenstaande: <span className='bold-text-contact'>Recycleperron</span></p> 
           </div>
           {/* Picture of stadsjutters */}
-          <div className='ion-text-center'>
+          <div className='ion-text-center ion-padding-bottom'>
             <img src={AboutImg} alt="Foto stadsjutters" className='about-img'/>
           </div>
         </IonCol>

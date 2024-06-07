@@ -100,7 +100,7 @@ const Register: React.FC = () => {
         </IonButtons>
       </IonHeader>
       {/* Content */}
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding-horizontal">
         <IonGrid fixed>
           {/* Logo */}
           <IonRow class="ion-justify-content-center">
